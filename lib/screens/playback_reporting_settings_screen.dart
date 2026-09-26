@@ -23,7 +23,7 @@ class PlaybackReportingSettingsScreen extends StatefulWidget {
 class _PlaybackReportingSettingsScreenState extends State<PlaybackReportingSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    bool hasRpcSupport = Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+    bool hasRpcSupport = false; // Discord Rich Presence removed in Fairhaven Music
 
     return Scaffold(
       appBar: AppBar(

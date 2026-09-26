@@ -37,7 +37,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Finamp</string>
+		<string>Fairhaven Music</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -58,7 +58,7 @@
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>
 				<key>CFBundleURLName</key>
-				<string>com.unicornsonlsd.finamp-ios</string>
+				<string>net.fairhavenmusic.app</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>finamp</string>
