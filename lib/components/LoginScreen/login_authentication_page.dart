@@ -1,7 +1,7 @@
+import 'package:finamp/branding.dart';
 import 'package:finamp/components/Buttons/cta_medium.dart';
 import 'package:finamp/components/Buttons/simple_button.dart';
 import 'package:finamp/components/finamp_icon.dart';
-import 'package:finamp/components/LoginScreen/login_user_selection_page.dart';
 import 'package:finamp/components/global_snackbar.dart';
 import 'package:finamp/l10n/app_localizations.dart';
 import 'package:finamp/models/jellyfin_models.dart';
@@ -10,6 +10,7 @@ import 'package:flutter/material.dart' hide ConnectionState;
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'login_flow.dart';
 
@@ -66,20 +67,32 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
                   alignment: Alignment.centerLeft,
                   child: SimpleButton(
                     icon: TablerIcons.chevron_left,
-                    text: AppLocalizations.of(context)!.backToAccountSelection,
+                    text: AppLocalizations.of(context)!.back,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
               ),
-              JellyfinUserWidget(user: widget.connectionState?.selectedUser),
               _buildLoginForm(context),
               const SizedBox(height: 16),
               CTAMedium(
                 text: AppLocalizations.of(context)!.login,
                 icon: TablerIcons.login_2,
                 onPressed: () async => await sendForm(),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () => launchUrl(Uri.parse(accountHelpUrl), mode: LaunchMode.externalApplication),
+                child: Text(
+                  AppLocalizations.of(context)!.createAccountOrResetPassword,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ),
             ],
           ),

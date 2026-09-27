@@ -3,15 +3,12 @@ import 'package:finamp/components/SettingsScreen/logout_list_tile.dart';
 import 'package:finamp/components/finamp_app_bar_back_button.dart';
 import 'package:finamp/components/finamp_icon.dart';
 import 'package:finamp/l10n/app_localizations.dart';
-import 'package:finamp/menus/client_certificate_authentication_menu.dart';
-import 'package:finamp/menus/quick_connect_authorization_menu.dart';
 import 'package:finamp/menus/server_sharing_menu.dart';
 import 'package:finamp/screens/accessibility_settings_screen.dart';
 import 'package:finamp/screens/audio_service_settings_screen.dart';
 import 'package:finamp/screens/downloads_settings_screen.dart';
 import 'package:finamp/screens/home_screen_settings_screen.dart';
 import 'package:finamp/screens/interaction_settings_screen.dart';
-import 'package:finamp/screens/language_selection_screen.dart';
 import 'package:finamp/screens/layout_settings_screen.dart';
 import 'package:finamp/screens/network_settings_screen.dart';
 import 'package:finamp/screens/playback_reporting_settings_screen.dart';
@@ -19,14 +16,12 @@ import 'package:finamp/screens/quick_settings_screen.dart';
 import 'package:finamp/screens/transcoding_settings_screen.dart';
 import 'package:finamp/screens/view_selector.dart';
 import 'package:finamp/screens/volume_normalization_settings_screen.dart';
-import 'package:finamp/services/client_certificate_installer.dart';
 import 'package:finamp/services/finamp_settings_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:locale_names/locale_names.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -101,16 +96,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               },
                           ),
                           const TextSpan(text: '\n\n'),
-                          TextSpan(text: '${localizations.aboutTranslations}\n'),
-                          TextSpan(
-                            text: translationsLink,
-                            style: linkStyle,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                await launchUrl(Uri.parse(translationsLink));
-                              },
-                          ),
-                          const TextSpan(text: '\n\n'),
                           TextSpan(text: '${localizations.aboutReleaseNotes}\n'),
                           TextSpan(
                             text: releaseNotesLink,
@@ -119,11 +104,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               ..onTap = () async {
                                 await launchUrl(Uri.parse(releaseNotesLink));
                               },
-                          ),
-                          const TextSpan(text: '\n\n\n'),
-                          TextSpan(
-                            text: localizations.aboutThanks,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -204,14 +184,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             enabled: !ref.watch(finampSettingsProvider.isOffline),
             onTap: () => Navigator.of(context).pushNamed(ViewSelector.routeName),
           ),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(AppLocalizations.of(context)!.language),
-            subtitle: Text(
-              ref.watch(finampSettingsProvider.locale)?.nativeDisplayLanguage ?? AppLocalizations.of(context)!.system,
-            ),
-            onTap: () => Navigator.of(context).pushNamed(LanguageSelectionScreen.routeName),
-          ),
           Divider(),
           if (!lockServerUrl)
             ListTile(
@@ -219,24 +191,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               title: Text(AppLocalizations.of(context)!.serverSharingMenuButtonTitle),
               onTap: () => showServerSharingPanel(context: context),
             ),
-          ListTile(
-            leading: Icon(TablerIcons.lock_bolt),
-            title: Text(AppLocalizations.of(context)!.quickConnectAuthorizationMenuButtonTitle),
-            onTap: () => showQuickConnectAuthorizationMenu(context: context),
-          ),
-          ListTile(
-            leading: Icon(TablerIcons.certificate),
-            title: Text(AppLocalizations.of(context)!.clientCertificate),
-            subtitle: Text(
-              !ClientCertificateInstaller.isSupported
-                  ? AppLocalizations.of(context)!.clientCertificatesUnsupported
-                  : ref.watch(finampSettingsProvider.clientCertificate) != null
-                  ? AppLocalizations.of(context)!.clientCertificateInstalled
-                  : AppLocalizations.of(context)!.clientCertificateUnavailable,
-            ),
-            enabled: ClientCertificateInstaller.isSupported,
-            onTap: () => showClientCertificateMenu(context: context),
-          ),
           const LogoutListTile(),
         ],
       ),

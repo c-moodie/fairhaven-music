@@ -16,7 +16,7 @@ final AutoDisposeProviderFamily<bool, BaseItemDto> canDeleteFromServerProvider =
   }
   var itemType = BaseItemDtoType.fromItem(item);
   var isPlaylist = itemType == BaseItemDtoType.playlist;
-  bool deleteEnabled = ref.watch(finampSettingsProvider.allowDeleteFromServer);
+  const bool deleteEnabled = false; // Fairhaven Music: deleting songs/albums from the server is disabled
 
   // always check if a playlist is deletable
   if (!deleteEnabled && !isPlaylist) {

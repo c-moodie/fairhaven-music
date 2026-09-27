@@ -42,7 +42,6 @@ class _InteractionSettingsScreenState extends State<InteractionSettingsScreen> {
           AutoSwitchItemCurationTypeToggle(),
           FastScrollSelector(),
           AutoExpandPlayerScreenSelector(),
-          ShowDeleteFromServerOptionToggle(),
           KeepScreenOnDropdownListTile(),
           KeepScreenOnWhilePluggedInSelector(),
           PreferAddingToFavoritesOverPlaylistsToggle(),

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:finamp/branding.dart';
+
 import 'package:finamp/components/LoginScreen/login_server_selection_page.dart';
 import 'package:finamp/models/jellyfin_models.dart';
 import 'package:finamp/screens/view_selector.dart';
@@ -96,7 +98,16 @@ class _LoginFlowState extends State<LoginFlow> {
                     serverState.selectedServer = server;
                     serverState.baseUrl = baseUrl;
                     serverState.clientDiscoveryHandler.stopDiscovery();
-                    loginNavigatorKey.currentState!.pushNamed(LoginUserSelectionPage.routeName);
+                    // Fairhaven Music: no account picker or Quick Connect,
+                    // go straight to the username/password sign-in page.
+                    GetIt.instance<JellyfinApiHelper>().baseUrlTemp = Uri.parse(baseUrl);
+                    connectionState.selectedUser = null;
+                    if (lockServerUrl) {
+                      // Replace the (automatic) server page so "Back" returns to the welcome screen
+                      loginNavigatorKey.currentState!.pushReplacementNamed(LoginAuthenticationPage.routeName);
+                    } else {
+                      loginNavigatorKey.currentState!.pushNamed(LoginAuthenticationPage.routeName);
+                    }
                   },
                 ),
               );

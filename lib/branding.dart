@@ -27,3 +27,6 @@ const Color burgundyDeepColor = Color(0xFF2A0712);
 
 /// Complementary gold accent (tertiary color).
 const Color goldAccentColor = Color(0xFFE9C16C);
+
+/// Link shown under the Log In button on the sign-in screen.
+const String accountHelpUrl = "https://it.fairhavenbaptist.org/music-app/";

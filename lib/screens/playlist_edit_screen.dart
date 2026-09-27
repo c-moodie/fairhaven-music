@@ -165,7 +165,7 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
           // Jellyfin can't handle updating both the track list and name at the same time, so make two separate requests
           await _jellyfinApiHelper.updatePlaylist(
             newPlaylist: NewPlaylist(
-              isPublic: _publicVisibility,
+              isPublic: false, // Fairhaven Music: all playlists are private
               name: _name,
               userId: GetIt.instance<FinampUserHelper>().currentUserId,
             ),
@@ -489,20 +489,6 @@ class _HeaderSection extends ConsumerWidget {
                             onFieldSubmitted: (_) async => await onSubmit(),
                             onChanged: onNameChanged,
                             onSaved: (newValue) => onNameChanged(newValue ?? ''),
-                          ),
-                        ),
-                        FormField<bool>(
-                          builder: (state) => CheckboxListTile(
-                            value: publicVisibility,
-                            title: Text(
-                              AppLocalizations.of(context)!.publiclyVisiblePlaylist,
-                              textAlign: TextAlign.left,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 4.0),
-                            onChanged: (value) {
-                              state.didChange(value);
-                              if (value != null) onVisibilityChanged(value);
-                            },
                           ),
                         ),
                         Padding(

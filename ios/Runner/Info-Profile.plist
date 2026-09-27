@@ -51,7 +51,7 @@
 			<true/>
 		</dict>
 		<key>NSAppleMusicUsageDescription</key>
-		<string>Finamp can use your media library to store downloaded songs. If you don't want this, Finamp can also download songs to the app's internal directory, which doesn't use any permissions.</string>
+		<string>Fairhaven Music can save downloaded songs to your media library. You can also keep downloads inside the app instead, which doesn't need this permission.</string>
 		<key>NSBonjourServices</key>
 		<array>
 			<string>_dartobservatory._tcp</string>
@@ -59,13 +59,16 @@
 		<key>NSLocalNetworkUsageDescription</key>
 		<string>Required for debugging</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>I don't know why this permission is being requested, you should probably deny it. If you can, create a GitHub issue with a screenshot of this message.</string>
+		<string>Fairhaven Music only uses this when you choose a file to import with the file picker.</string>
 		<key>NSSiriUsageDescription</key>
-		<string>Finamp uses Siri to play music via voice commands like "Play [track/artist] on Finamp".</string>
+		<string>Fairhaven Music uses Siri so you can play music with voice commands like "Play [song or artist] in Fairhaven Music".</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Fairhaven Music doesn't use your location.</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 		<key>INIntentsSupported</key>
 		<array>
 			<string>INPlayMediaIntent</string>
-			<string>INSearchForMediaIntent</string>
 		</array>
 		<key>INSupportedMediaCategories</key>
 		<array>

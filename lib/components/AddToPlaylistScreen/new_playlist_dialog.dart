@@ -29,7 +29,8 @@ class _NewPlaylistDialogState extends State<NewPlaylistDialog> {
   bool _isSubmitting = false;
 
   String? _name;
-  bool? _public;
+  // Fairhaven Music: all playlists are private
+  final bool _public = false;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -51,18 +52,6 @@ class _NewPlaylistDialogState extends State<NewPlaylistDialog> {
               initialValue: widget.initialName,
               onFieldSubmitted: (_) async => await _submit(),
               onSaved: (newValue) => _name = newValue,
-            ),
-            FormField<bool>(
-              builder: (state) {
-                return CheckboxListTile(
-                  value: state.value,
-                  title: Text(AppLocalizations.of(context)!.publiclyVisiblePlaylist, textAlign: TextAlign.end),
-                  onChanged: state.didChange,
-                  contentPadding: EdgeInsets.zero,
-                );
-              },
-              initialValue: true,
-              onSaved: (newValue) => _public = newValue,
             ),
           ],
         ),

@@ -45,7 +45,7 @@ class DeleteFromServerMenuEntry extends ConsumerWidget implements HideableMenuEn
     }
     var itemType = BaseItemDtoType.fromItem(baseItem);
     var isPlaylist = itemType == BaseItemDtoType.playlist;
-    bool deleteEnabled = FinampSettingsHelper.finampSettings.allowDeleteFromServer;
+    const bool deleteEnabled = false; // Fairhaven Music: deleting songs/albums from the server is disabled
 
     // always check if a playlist is deletable
     if (!deleteEnabled && !isPlaylist) {

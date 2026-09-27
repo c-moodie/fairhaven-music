@@ -377,20 +377,7 @@ class _LoginServerSelectionPageState extends ConsumerState<LoginServerSelectionP
                 onPressed: () => widget.onServerSelected?.call(state.manualServer!, state.baseUrl!),
               ),
             if (_lockedStatus == _LockedServerStatus.failed) ...[
-              if (state.clientCertificateRequired && !isClientCertificateInstalled)
-                ListTile(
-                  leading: const Icon(TablerIcons.alert_triangle),
-                  title: Text(AppLocalizations.of(context)!.clientCertificateRequired),
-                  subtitle: ClientCertificateInstaller.isSupported
-                      ? null
-                      : Text(AppLocalizations.of(context)!.clientCertificatesUnsupported),
-                  onTap: ClientCertificateInstaller.isSupported
-                      ? () => Navigator.of(context, rootNavigator: true).pushNamed(AdvancedLoginOptionsScreen.routeName)
-                      : null,
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                )
-              else
-                Text(
+              Text(
                   AppLocalizations.of(context)!.lockedServerUnreachable,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,

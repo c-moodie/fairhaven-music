@@ -25,12 +25,13 @@ class LoginSplashPage extends StatelessWidget {
               child: Hero(tag: "finamp_logo", child: FinampIcon(150, 150)),
             ),
             RichText(
+              textAlign: TextAlign.center,
               text: TextSpan(
                 style: Theme.of(context).textTheme.headlineMedium,
                 children: [
                   TextSpan(text: welcomeString[0]),
                   TextSpan(
-                    text: "Finamp",
+                    text: "Fairhaven Music",
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       // color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w500,
@@ -43,8 +44,6 @@ class LoginSplashPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 60),
-            Text(AppLocalizations.of(context)!.loginFlowSlogan, style: Theme.of(context).textTheme.bodyLarge),
             const SizedBox(height: 80),
             CTAHuge(
               text: AppLocalizations.of(context)!.loginFlowGetStarted,

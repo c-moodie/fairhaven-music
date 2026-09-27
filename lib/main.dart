@@ -440,7 +440,7 @@ Future<void> _setupPlaybackServices() async {
     builder: () => MusicPlayerBackgroundTask(),
     config: AudioServiceConfig(
       androidStopForegroundOnPause: FinampSettingsHelper.finampSettings.androidStopForegroundOnPause,
-      androidNotificationChannelName: "Finamp",
+      androidNotificationChannelName: "Fairhaven Music",
       androidNotificationIcon: "mipmap/white",
       androidNotificationChannelId: "com.unicornsonlsd.finamp.audio",
       // notificationColor: TODO use the theme color for older versions of Android,
@@ -1064,7 +1064,7 @@ class FinampApp extends ConsumerWidget {
       // the first language in supportedLocales (Arabic as of writing)
       localeListResolutionCallback: (locales, supportedLocales) =>
           basicLocaleListResolution(locales, [const Locale("en")].followedBy(supportedLocales)),
-      locale: locale,
+      locale: const Locale("en"), // Fairhaven Music: English only
       scaffoldMessengerKey: GlobalSnackbar.rawMaterialAppScaffoldKey,
       navigatorKey: GlobalSnackbar.rawMaterialAppNavigatorKey,
       shortcuts: GlobalShortcuts.shortcutMap,

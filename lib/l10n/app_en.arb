@@ -23,15 +23,15 @@
     "@about": {
         "description": "Label for the about/info button on the settings screen"
     },
-    "aboutContributionPrompt": "Made by awesome people in their free time.\nYou could be one of them!",
+    "aboutContributionPrompt": "This is a custom app built using Finamp as the original source code. Learn more below.",
     "@aboutContributionPrompt": {
         "description": "Text shown in the about screen, explaining that the app is made by volunteers and that the user could be one of them."
     },
-    "aboutContributionLink": "Contribute to Finamp on GitHub:",
+    "aboutContributionLink": "View the original Finamp source code:",
     "@aboutContributionLink": {
         "description": "Link to the Finamp GitHub repository, shown in the about screen."
     },
-    "aboutReleaseNotes": "Read the latest release notes:",
+    "aboutReleaseNotes": "Read the latest Finamp release notes:",
     "@aboutReleaseNotes": {
         "description": "Link to the release notes, shown in the about screen."
     },
@@ -70,6 +70,10 @@
         "description": "Label for button shown during the login process that allows the user to change the app language"
     },
     "loginFlowServerSelectionHeading": "Connect to Fairhaven Music",
+    "createAccountOrResetPassword": "Create an Account or Reset Password",
+    "@createAccountOrResetPassword": {
+        "description": "Link below the Log In button that opens the Fairhaven Music account help page"
+    },
     "lockedServerConnecting": "Connecting to Fairhaven Music…",
     "@lockedServerConnecting": {
         "description": "Shown on the login screen while the app connects to the built-in Fairhaven Music server"
