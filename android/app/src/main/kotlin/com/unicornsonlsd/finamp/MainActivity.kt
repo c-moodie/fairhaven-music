@@ -63,7 +63,7 @@ class MainActivity : AudioServiceActivity() {
             (intent.action == INTENT_ACTION_MUSIC_PLAYER || intent.action == CATEGORY_APP_MUSIC) &&
             intent.data == null
         ) {
-            intent.data = "finamp://play/surprisemix".toUri()
+            intent.data = "fairhavenmusic://play/surprisemix".toUri()
         }
     }
 

@@ -1,5 +1,5 @@
 {
-    "finamp": "Finamp",
+    "finamp": "Fairhaven Music",
     "@finamp": {
         "description": "App name, possibly translated"
     },
@@ -11,7 +11,7 @@
     "@startupErrorTitle": {
         "description": "The title for the error screen that shows when startup fails."
     },
-    "startupErrorCallToAction": "Please create an issue on \"github.com/jmshrv/finamp\" with the logs (use the button below) and a screenshot of this page, so that we can fix it as quickly as possible.",
+    "startupErrorCallToAction": "Please contact Fairhaven Music support at it.fairhavenbaptist.org/music-app and include the logs (use the button below) and a screenshot of this page.",
     "@startupErrorCallToAction": {
         "description": "The subtitle / call to action for what to do after encountering a startup error"
     },
@@ -19,7 +19,7 @@
     "@startupErrorWorkaround": {
         "description": "The subtitle for how to manually recover from a startup error"
     },
-    "about": "About Finamp",
+    "about": "About Fairhaven Music",
     "@about": {
         "description": "Label for the about/info button on the settings screen"
     },
@@ -27,7 +27,11 @@
     "@aboutContributionPrompt": {
         "description": "Text shown in the about screen, explaining that the app is made by volunteers and that the user could be one of them."
     },
-    "aboutContributionLink": "View the original Finamp source code:",
+    "aboutContributionLink": "View the source code for this app:",
+    "aboutOriginalProject": "Based on the original Finamp project:",
+    "@aboutOriginalProject": {
+        "description": "Label above the link to the original Finamp project in the About dialog"
+    },
     "@aboutContributionLink": {
         "description": "Link to the Finamp GitHub repository, shown in the about screen."
     },
@@ -39,7 +43,7 @@
     "@aboutTranslations": {
         "description": "Link to the translation project, shown in the about screen."
     },
-    "aboutThanks": "Thank you for using Finamp!",
+    "aboutThanks": "Thank you for using Fairhaven Music!",
     "@aboutThanks": {
         "description": "Thank you message shown in the about screen."
     },
@@ -501,7 +505,7 @@
     "@playbackSpeedControlSettingSubtitle": {
         "description": "Subtitle for the playback speed visibility setting"
     },
-    "playbackSpeedControlSettingDescription": "Automatic:\nFinamp tries to identify whether the track you are playing is a podcast or (part of) an audiobook. This is considered to be the case if the track is longer than {trackDuration} minutes, if the track''s album is longer than {albumDuration} hours, or if the track has at least one of these genres assigned: {genreList}\nPlayback speed controls will then be shown in the player screen menu.\n\nShown:\nThe playback speed controls will always be shown in the player screen menu.\n\nHidden:\nThe playback speed controls in the player screen menu are always hidden.",
+    "playbackSpeedControlSettingDescription": "Automatic:\nThe app tries to identify whether the track you are playing is a podcast or (part of) an audiobook. This is considered to be the case if the track is longer than {trackDuration} minutes, if the track''s album is longer than {albumDuration} hours, or if the track has at least one of these genres assigned: {genreList}\nPlayback speed controls will then be shown in the player screen menu.\n\nShown:\nThe playback speed controls will always be shown in the player screen menu.\n\nHidden:\nThe playback speed controls in the player screen menu are always hidden.",
     "@playbackSpeedControlSettingDescription": {
         "description": "Description for the dropdown that selects the replay gain mode, shown in a dialog that opens when the user presses the info icon next to the dropdown",
         "placeholders": {
@@ -1064,7 +1068,7 @@
     "@reportQueueToServer": {
         "description": "Label for the setting that toggles reporting of the current queue to the Fairhaven Music server"
     },
-    "reportQueueToServerSubtitle": "When enabled, Finamp will send the current queue to the server. This can improve remote control and allow server-side restoration of the queue. Always enabled if the 'Play On' feature is enabled.",
+    "reportQueueToServerSubtitle": "When enabled, the app will send the current queue to the server. This can improve remote control and allow server-side restoration of the queue. Always enabled if the 'Play On' feature is enabled.",
     "@reportQueueToServerSubtitle": {
         "description": "Description of the setting that toggles reporting of the current queue to the Fairhaven Music server"
     },
@@ -1092,7 +1096,7 @@
     "@enablePlayonTitle": {
         "description": "Label for the setting to enable Fairhaven Music's 'Play On' feature (remote control)"
     },
-    "enablePlayonSubtitle": "Enables Fairhaven Music's 'Play On' feature (remote-controlling Finamp from another client). Disable this if your reverse proxy or server doesn't support websockets.",
+    "enablePlayonSubtitle": "Enables the 'Play On' feature (remote-controlling this app from another device). Disable this if your reverse proxy or server doesn't support websockets.",
     "@enablePlayonSubtitle": {
         "description": "Description of the setting to enable Fairhaven Music's 'Play On' feature (remote control)"
     },
@@ -1286,7 +1290,7 @@
     "@noMusicLibrariesTitle": {
         "description": "Title for message that shows on the views screen when no music libraries could be found."
     },
-    "noMusicLibrariesBody": "Finamp could not find any music libraries. Please ensure that your Fairhaven Music server contains at least one library with the content type set to \"Music\".",
+    "noMusicLibrariesBody": "The app could not find any music libraries. Please ensure that your Fairhaven Music server contains at least one library with the content type set to \"Music\".",
     "refresh": "Refresh",
     "moreInfo": "More Info",
     "volumeNormalizationSettingsTitle": "Volume Normalization",
@@ -2360,7 +2364,7 @@
     "@autoReloadQueueTitle": {
         "description": "Title for the setting that controls if the queue is automatically reloaded when the source changes"
     },
-    "autoReloadQueueSubtitle": "Automatically reload the queue when the source changes (i.e. offline mode enabled or server address switch). If disabled, Finamp will prompt you instead.",
+    "autoReloadQueueSubtitle": "Automatically reload the queue when the source changes (i.e. offline mode enabled or server address switch). If disabled, the app will prompt you instead.",
     "@autoReloadQueueSubtitle": {
         "description": "Subtitle for the setting that controls if the queue is automatically reloaded when the source changes"
     },
@@ -2594,7 +2598,7 @@
     "@serverSharingMenuButtonTitle": {
         "description": "Title for the button in the drawer that opens the server sharing menu"
     },
-    "serverSharingMenuConfirmationDialogText": "Are you sure you want to enable server sharing even though you're in Offline Mode? This will cause Finamp to send data over the local network.",
+    "serverSharingMenuConfirmationDialogText": "Are you sure you want to enable server sharing even though you're in Offline Mode? This will cause the app to send data over the local network.",
     "@serverSharingMenuConfirmationDialogText": {
         "description": "Dialog text shown when enabling server sharing while offline mode is enabled"
     },
@@ -2622,7 +2626,7 @@
     "@serverSharingMenuDescription": {
         "description": "Description text shown in the server sharing menu, right below the controls"
     },
-    "serverSharingMenuDetails": "It works by listening to server discovery requests by other clients on the local network, and then replying to those requests with the configured address of your Fairhaven Music server.\nIf you have both a local and public address configured, Finamp will provide both to the requesting client.",
+    "serverSharingMenuDetails": "It works by listening to server discovery requests by other clients on the local network, and then replying to those requests with the configured address of your Fairhaven Music server.\nIf you have both a local and public address configured, the app will provide both to the requesting client.",
     "@serverSharingMenuDetails": {
         "description": "Description text shown in the server sharing menu, below the description"
     },
@@ -2662,7 +2666,7 @@
     "@quickConnectAuthorizationMenuStateSubtitleFailed": {
         "description": "Subtitle for the quick connect authorization menu state info (above the input field) when the authorization was unsuccessful"
     },
-    "quickConnectAuthorizationMenuDescription": "If you're trying to sign into another Fairhaven Music client via Quick Connect, you can enter or paste the 6 digit code into the field above. This will authorize the sign in request of the other client, and log you into the same account as you're using for Finamp.",
+    "quickConnectAuthorizationMenuDescription": "If you're trying to sign into another Fairhaven Music client via Quick Connect, you can enter or paste the 6 digit code into the field above. This will authorize the sign in request of the other client, and log you into the same account as you're using for this app.",
     "@quickConnectAuthorizationMenuDescription": {
         "description": "Description for the quick connect authorization menu, shown at the bottom"
     },
@@ -2816,7 +2820,7 @@
     "@autoplayRestoredQueueSubtitle": {
         "description": "Subtitle for the setting that controls if restored queues automatically play."
     },
-    "missingBlurhashWarning": "Warning: The Fairhaven Music server appears to be misconfigured and is not calculating blurhashes.  This prevents Finamp from de-duplicating image downloads.  Please correct the server and run a downloads repair.",
+    "missingBlurhashWarning": "Warning: The Fairhaven Music server appears to be misconfigured and is not calculating blurhashes.  This prevents the app from de-duplicating image downloads.  Please correct the server and run a downloads repair.",
     "@missingBlurhashWarning": {
         "description": "A warning message displayed on the downloads screen if the Fairhaven Music server is missing blurhashes."
     },
@@ -3013,7 +3017,7 @@
     "@lookingForSomethingElse": {
         "description": "Header for home screen customization button"
     },
-    "builtWithByTheFinampContributors": "Built with ♥ by the Finamp contributors.",
+    "builtWithByTheFinampContributors": "Based on Finamp, built with ♥ by the Finamp contributors.",
     "@builtWithByTheFinampContributors": {
         "description": "Message in home screen footer"
     },
@@ -3605,11 +3609,11 @@
     "@voiceSearch": {
         "description": "Heading for the page that prompts the user to perform a voice search."
     },
-    "carPlaySiriHint": "Say \"Hey Siri, play [track/artist/album] on Finamp\"",
+    "carPlaySiriHint": "Say \"Hey Siri, play [song or artist] in Fairhaven Music\"",
     "@carPlaySiriHint": {
         "description": "Hint text for how to use Siri to search in CarPlay."
     },
-    "carPlayLoginPrompt": "Open the Finamp app on your phone to log in to your Fairhaven Music server.",
+    "carPlayLoginPrompt": "Open the Fairhaven Music app on your phone to sign in.",
     "@carPlayLoginPrompt": {
         "description": "Label shown when the user is trying to use CarPlay without being logged in."
     },
@@ -3767,7 +3771,7 @@
     "perTabGridModeScreen": "Set per-tab view types",
     "perTabAlbumGrid": "Albums only in grid",
     "quickSettingsScreen": "Quick Settings",
-    "quickSettingsScreenDescription": "Customize Finamp to your preferences with these core options. Come back here any time via Settings.",
+    "quickSettingsScreenDescription": "Customize Fairhaven Music to your preferences with these core options. Come back here any time via Settings.",
     "quickSettingsTabsLink": "Rearrange and hide tabs",
     "quickSettingsTranscodeLink": "All transcoding settings",
     "quickSettingsLayoutLink": "All layout & theme settings",

@@ -30,3 +30,11 @@ const Color goldAccentColor = Color(0xFFE9C16C);
 
 /// Link shown under the Log In button on the sign-in screen.
 const String accountHelpUrl = "https://it.fairhavenbaptist.org/music-app/";
+
+/// Public repository with the Fairhaven Music source code.
+/// Finamp is licensed under the MPL-2.0, which requires the source code of this
+/// modified version to be available to everyone who gets the app.
+const String sourceCodeUrl = "https://github.com/c-moodie/fairhaven-music";
+
+/// The original project this app is based on (credited in the About screen).
+const String originalProjectUrl = "https://github.com/finamp-app/finamp";

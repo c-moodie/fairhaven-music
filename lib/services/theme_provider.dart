@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:finamp/branding.dart';
 import 'package:finamp/extensions/color_extensions.dart';
 import 'package:finamp/services/album_image_provider.dart';
 import 'package:finamp/services/current_album_image_provider.dart';
@@ -275,7 +276,7 @@ class FinampThemeFromImage extends _$FinampThemeFromImage {
     }
     HSLColor average;
     if (population == 0) {
-      return RawThemeResult.fromColors(Color(0xFF771116), Color(0xFF771116));
+      return RawThemeResult.fromColors(burgundyColor, burgundyColor);
     } else {
       average = HSLColor.fromColor(
         Color.from(alpha: 1.0, red: r / population, green: g / population, blue: b / population),
@@ -305,7 +306,7 @@ class FinampThemeFromImage extends _$FinampThemeFromImage {
     }
 
     return RawThemeResult.fromColors(
-      palette.vibrantColor?.color ?? palette.dominantColor?.color ?? const Color(0xFF771116),
+      palette.vibrantColor?.color ?? palette.dominantColor?.color ?? burgundyColor,
       background,
     );
   }
@@ -365,12 +366,12 @@ ColorScheme getGrayTheme(Brightness brightness) {
 }
 
 final defaultThemeDark = ColorScheme.fromSeed(
-  seedColor: const Color(0xFF771116),
+  seedColor: burgundyColor,
   brightness: Brightness.dark,
 );
 
 final defaultThemeLight = ColorScheme.fromSeed(
-  seedColor: const Color(0xFF771116),
+  seedColor: burgundyColor,
   brightness: Brightness.light,
 );
 

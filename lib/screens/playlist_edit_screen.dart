@@ -55,7 +55,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
 
   // Dirty tracking baselines
   late String _initialName;
-  late bool _initialVisibility;
   late List<String> _initialTrackIdsOrder;
 
   bool get _haveTracksChanged {
@@ -68,7 +67,9 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
     return false;
   }
 
-  bool get _hasMetadataChanged => _name != _initialName || (_publicVisibility ?? false) != _initialVisibility;
+  // Fairhaven Music: playlists are always saved as private, so a playlist that is
+  // currently public counts as changed and gets switched to private on save.
+  bool get _hasMetadataChanged => _name != _initialName || (_publicVisibility ?? false);
   bool get _hasCoverChanged => newAlbumImage != null;
   bool get _isDirty => _haveTracksChanged || _hasMetadataChanged || _hasCoverChanged;
 
@@ -97,7 +98,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
 
   void _resetDirtyBaseline() {
     _initialName = _name ?? '';
-    _initialVisibility = _publicVisibility ?? false;
     _initialTrackIdsOrder = playlistTracks.map((t) => t.id.raw).toList();
     newAlbumImage = null;
     removedTracks.clear();
@@ -136,7 +136,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
       );
     }
     _initialName = _name ?? '';
-    _initialVisibility = _publicVisibility ?? false;
     _initialTrackIdsOrder = playlistTracks.map((t) => t.id.raw).toList();
   }
 
@@ -151,7 +150,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
     final resultPlaylist = await _jellyfinApiHelper.getPlaylist(playlist.id!);
     setState(() {
       _publicVisibility = resultPlaylist.openAccess;
-      _initialVisibility = _publicVisibility ?? false;
     });
   }
 
@@ -173,6 +171,7 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
           );
           // update local BaseItemDto to reflect changes for already loaded playlist screen
           playlist.name = _name;
+          _publicVisibility = false; // it's private on the server now
         }
         if (_haveTracksChanged) {
           await _jellyfinApiHelper.updatePlaylist(
@@ -269,7 +268,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
                   name: _name,
                   albumImage: playlist,
                   canEdit: ref.watch(canEditMetadataProvider),
-                  publicVisibility: _publicVisibility ?? false,
                   trackCountString: trackCountString,
                   trackDurationString: trackDurationString,
                   onPickImage: () async {
@@ -279,7 +277,6 @@ class _PlaylistEditScreenState extends ConsumerState<PlaylistEditScreen> {
                   },
                   newAlbumImage: newAlbumImage,
                   onNameChanged: (v) => setState(() => _name = v),
-                  onVisibilityChanged: (v) => setState(() => _publicVisibility = v),
                   onSubmit: () async => await _saveOrUpdatePlaylist(),
                 ),
               ),
@@ -369,13 +366,11 @@ class _HeaderSection extends ConsumerWidget {
     required this.name,
     required this.albumImage,
     required this.canEdit,
-    required this.publicVisibility,
     required this.trackCountString,
     required this.trackDurationString,
     required this.onPickImage,
     required this.newAlbumImage,
     required this.onNameChanged,
-    required this.onVisibilityChanged,
     required this.onSubmit,
     Key? key,
   }) : super(key: key);
@@ -385,13 +380,11 @@ class _HeaderSection extends ConsumerWidget {
   final String? name;
   final BaseItemDto? albumImage;
   final bool canEdit;
-  final bool publicVisibility;
   final String trackCountString;
   final String trackDurationString;
   final VoidCallback onPickImage;
   final File? newAlbumImage;
   final ValueChanged<String> onNameChanged;
-  final ValueChanged<bool> onVisibilityChanged;
   final Future<void> Function() onSubmit;
 
   @override

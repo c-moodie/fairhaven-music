@@ -15,7 +15,6 @@ import 'package:logging/logging.dart';
 
 import 'login_authentication_page.dart';
 import 'login_splash_page.dart';
-import 'login_user_selection_page.dart';
 
 class LoginFlow extends StatefulWidget {
   const LoginFlow({super.key});
@@ -108,21 +107,6 @@ class _LoginFlowState extends State<LoginFlow> {
                     } else {
                       loginNavigatorKey.currentState!.pushNamed(LoginAuthenticationPage.routeName);
                     }
-                  },
-                ),
-              );
-              break;
-            case LoginUserSelectionPage.routeName:
-              route = createRoute(
-                LoginUserSelectionPage(
-                  serverState: serverState,
-                  connectionState: connectionState,
-                  onUserSelected: (UserDto? user) {
-                    connectionState.selectedUser = user;
-                    loginNavigatorKey.currentState!.pushNamed(LoginAuthenticationPage.routeName);
-                  },
-                  onAuthenticated: () {
-                    Navigator.of(context).pushReplacementNamed(ViewSelector.routeName);
                   },
                 ),
               );

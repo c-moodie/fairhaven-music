@@ -35,9 +35,6 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
-  static const repoLink = "https://github.com/finamp-app/finamp";
-  static const releaseNotesLink = "https://github.com/finamp-app/finamp/releases";
-  static const translationsLink = "https://hosted.weblate.org/projects/finamp";
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +56,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               icon: const Icon(Icons.info),
               onPressed: () async {
                 final localizations = AppLocalizations.of(context)!;
-                final applicationLegalese = AppLocalizations.of(context)!.applicationLegalese(repoLink);
+                final applicationLegalese = AppLocalizations.of(context)!.applicationLegalese(sourceCodeUrl);
                 PackageInfo packageInfo = await PackageInfo.fromPlatform();
                 if (!context.mounted) return;
 
@@ -88,21 +85,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           const TextSpan(text: '\n\n'),
                           TextSpan(text: '${localizations.aboutContributionLink}\n'),
                           TextSpan(
-                            text: repoLink,
+                            text: sourceCodeUrl,
                             style: linkStyle,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                await launchUrl(Uri.parse(repoLink));
+                                await launchUrl(Uri.parse(sourceCodeUrl));
                               },
                           ),
                           const TextSpan(text: '\n\n'),
-                          TextSpan(text: '${localizations.aboutReleaseNotes}\n'),
+                          TextSpan(text: '${localizations.aboutOriginalProject}\n'),
                           TextSpan(
-                            text: releaseNotesLink,
+                            text: originalProjectUrl,
                             style: linkStyle,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                await launchUrl(Uri.parse(releaseNotesLink));
+                                await launchUrl(Uri.parse(originalProjectUrl));
                               },
                           ),
                         ],

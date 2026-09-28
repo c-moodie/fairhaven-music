@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:finamp/branding.dart';
 import 'package:finamp/components/MusicScreen/item_wrapper.dart';
 import 'package:finamp/components/finamp_app_bar_back_button.dart';
 import 'package:finamp/components/finamp_icon.dart';
@@ -141,7 +142,7 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                                     (!ref.watch(finampSettingsProvider.useSystemAccentColor) &&
                                         ref.watch(finampSettingsProvider.accentColor) == null)
                                 ? ColorScheme.of(context).primary.withOpacity(0.1)
-                                : Color(0xff2a0709),
+                                : burgundyDeepColor,
                             ColorScheme.of(context).surface,
                           )
                         : Colors.white,
