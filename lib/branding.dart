@@ -16,14 +16,14 @@ const String defaultServerUrl = "https://listen.fairhavenmusic.net";
 /// Set to false to let users enter a different server again.
 const bool lockServerUrl = true;
 
-/// Classic burgundy, used as the main accent in light mode and for containers.
-const Color burgundyColor = Color(0xFF800020);
+/// Fairhaven Music logo burgundy (#771116), used as the main accent in light mode and for containers.
+const Color burgundyColor = Color(0xFF771116);
 
 /// A slightly brighter burgundy so accents stay readable on dark backgrounds.
-const Color burgundyBrightColor = Color(0xFFC8374F);
+const Color burgundyBrightColor = Color(0xFFC8373E);
 
 /// Very dark burgundy used for dark backgrounds / icon backgrounds.
-const Color burgundyDeepColor = Color(0xFF2A0712);
+const Color burgundyDeepColor = Color(0xFF2A0709);
 
 /// Complementary gold accent (tertiary color).
 const Color goldAccentColor = Color(0xFFE9C16C);

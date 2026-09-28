@@ -141,7 +141,7 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                                     (!ref.watch(finampSettingsProvider.useSystemAccentColor) &&
                                         ref.watch(finampSettingsProvider.accentColor) == null)
                                 ? ColorScheme.of(context).primary.withOpacity(0.1)
-                                : Color(0xff2a0712),
+                                : Color(0xff2a0709),
                             ColorScheme.of(context).surface,
                           )
                         : Colors.white,
