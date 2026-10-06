@@ -16,7 +16,7 @@ import '../album_image.dart';
 
 part 'artist_chip.g.dart';
 
-const _radius = Radius.circular(4);
+const _radius = Radius.circular(12);
 const _borderRadius = BorderRadius.all(_radius);
 const _height = 24.0; // I'm sure this magic number will work on all devices
 final _defaultBackgroundColour = Colors.white.withOpacity(0.1);

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:finamp/components/padded_custom_scrollview.dart';
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/menus/components/menu_item_info_header.dart';
 import 'package:finamp/menus/components/playbackActions/playback_action_row.dart';
 import 'package:finamp/screens/blurred_player_screen_background.dart';
@@ -42,7 +43,9 @@ Future<T?> showThemedBottomSheet<T>({
   );
   return await showModalBottomSheet<T>(
     context: context,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(FairhavenRadius.sheet)),
+    ),
     isScrollControlled: true,
     clipBehavior: Clip.hardEdge,
     constraints: BoxConstraints(
@@ -116,7 +119,7 @@ class _ThemedBottomSheetState extends ConsumerState<ThemedBottomSheet> {
     assert(widget.buildSlivers == null || widget.buildWrapper == null);
     assert(widget.buildSlivers != null || widget.buildWrapper != null);
     return Theme(
-      data: ThemeData(colorScheme: ref.watch(localThemeProvider)),
+      data: buildFairhavenTheme(colorScheme: ref.watch(localThemeProvider)),
       child: Builder(
         builder: (BuildContext context) {
           Widget child;
@@ -181,14 +184,15 @@ class _ThemedBottomSheetState extends ConsumerState<ThemedBottomSheet> {
             ? Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 10.0),
+                    // 14 + 4 + 11.5 = 29.5, which [buildInternal] reserves for the handle.
+                    padding: const EdgeInsets.only(top: 14.0, bottom: 11.5),
                     child: Builder(
                       builder: (context) {
-                        var textColor = Theme.of(context).textTheme.bodySmall!.color!;
+                        final handleColor = ColorScheme.of(context).onSurfaceVariant.withValues(alpha: 0.45);
                         return Container(
-                          width: 40,
-                          height: 3.5,
-                          decoration: BoxDecoration(color: textColor, borderRadius: BorderRadius.circular(3.5)),
+                          width: 36,
+                          height: 4,
+                          decoration: BoxDecoration(color: handleColor, borderRadius: BorderRadius.circular(2)),
                         );
                       },
                     ),

@@ -123,5 +123,7 @@
 	<false/>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Fairhaven Music doesn't collect or use your location. A component built into the app can technically ask for it, but the app never does, and everything works normally if you decline.</string>
 </dict>
 </plist>

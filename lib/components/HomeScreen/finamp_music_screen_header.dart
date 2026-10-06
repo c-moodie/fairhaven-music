@@ -6,6 +6,7 @@ import 'package:finamp/components/MusicScreen/item_wrapper.dart';
 import 'package:finamp/components/finamp_app_bar_back_button.dart';
 import 'package:finamp/components/finamp_icon.dart';
 import 'package:finamp/extensions/color_extensions.dart';
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/l10n/app_localizations.dart';
 import 'package:finamp/menus/components/icon_button_with_semantics.dart';
 import 'package:finamp/models/finamp_models.dart';
@@ -79,7 +80,7 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
   Widget build(BuildContext context, WidgetRef ref) {
     Timer? debounce;
 
-    final activeTabBackgroundColor = ColorScheme.of(context).primaryContainer;
+    final activeTabBackgroundColor = ColorScheme.of(context).primary;
     final inactiveTabBackgroundColor = ColorScheme.of(context).surface;
     Color activeTabTextColor = AtContrast.getContrastiveTintedTextColor(onBackground: activeTabBackgroundColor);
     Color inactiveTabTextColor = AtContrast.getContrastiveTintedTextColor(onBackground: inactiveTabBackgroundColor);
@@ -147,7 +148,7 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                           )
                         : Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(12.0),
+                      borderRadius: BorderRadiusGeometry.circular(14.0),
                       side: Theme.brightnessOf(context) == Brightness.dark
                           ? BorderSide(color: ColorScheme.of(context).outline.withOpacity(0.3), width: 0.5)
                           : BorderSide.none,
@@ -216,9 +217,16 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                       },
                       onSubmitted: (value) => onUpdateSearchQuery?.call(value),
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(999),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: ColorScheme.of(context).onSurface.withOpacity(0.07),
+                        prefixIcon: Icon(TablerIcons.search, size: 20),
+                        prefixIconConstraints: const BoxConstraints(minWidth: 40, minHeight: 20),
                         hintText: MaterialLocalizations.of(context).searchFieldLabel,
-                        contentPadding: EdgeInsets.only(left: 4.0, top: 8.0, bottom: 8.0),
+                        contentPadding: EdgeInsets.only(left: 0.0, right: 12.0, top: 10.0, bottom: 10.0),
                         isDense: true,
                       ),
                     ),
@@ -243,7 +251,7 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                             singleTabConfig?.getTitle(context.l10n) ??
                                 finampUserHelper.currentUser?.currentView?.name ??
                                 appName,
-                            style: TextStyle(fontSize: 20),
+                            style: fairhavenDisplayStyle(fontSize: 22),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           );
@@ -322,10 +330,13 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
           ),
         ),
         if (ref.watch(finampSettingsProvider.showQuickActionsBanner))
-          SizedBox(
+          Container(
             height: isDesktop ? 34.0 : 40.0,
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Material(
               color: ColorScheme.of(context).primaryContainer,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(FairhavenRadius.sm)),
+              clipBehavior: Clip.antiAlias,
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed(QuickSettingsScreen.routeName);
@@ -358,9 +369,10 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
         if (!backButtonInsteadOfTabs)
           TabBar(
             controller: tabController,
-            indicator: BoxDecoration(borderRadius: BorderRadius.circular(8.0), color: activeTabBackgroundColor),
+            indicator: ShapeDecoration(shape: const StadiumBorder(), color: activeTabBackgroundColor),
             indicatorPadding: EdgeInsets.zero,
-            splashBorderRadius: BorderRadius.circular(8.0),
+            indicatorSize: TabBarIndicatorSize.label,
+            splashBorderRadius: BorderRadius.circular(999),
             labelColor: activeTabTextColor,
             // unselectedLabelColor: Colors.red, //!!! the label color is specified below, along with the font
             labelPadding: EdgeInsets.symmetric(horizontal: 4.0),
@@ -370,7 +382,10 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
             tabs: sortedTabs.map((tabType) {
               final textStyle = tabController?.index == sortedTabs.indexOf(tabType)
                   ? null
-                  : TextTheme.of(context).bodyMedium!.copyWith(color: inactiveTabTextColor);
+                  : TextTheme.of(context).bodyMedium!.copyWith(
+                      color: inactiveTabTextColor.withOpacity(0.75),
+                      fontWeight: FontWeight.w500,
+                    );
               return Tab(
                 height: 32.0,
                 child: GestureDetector(
@@ -394,8 +409,8 @@ class FinampMusicScreenHeader extends ConsumerWidget implements PreferredSizeWid
                         ),
                       ),*/
                     padding: tabType == ContentType.home
-                        ? EdgeInsets.only(left: 4, right: 8, top: 3, bottom: 3)
-                        : EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        ? EdgeInsets.only(left: 4, right: 12, top: 3, bottom: 3)
+                        : EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                     constraints: const BoxConstraints(minWidth: 50),
                     alignment: Alignment.center,
                     child: tabType == ContentType.home

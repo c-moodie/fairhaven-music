@@ -32,6 +32,12 @@ all changes made to the original, is available in this repository.
 - Private playlists only; deleting songs and albums from the server is disabled
 - Lyrics and Discord Rich Presence removed
 
+## UI refresh (2026)
+
+The interface was refreshed without changing behavior, colors, icons or app IDs.
+Shared type and shapes live in `lib/fairhaven_theme.dart`. Headings use Literata
+(bundled in `assets/fonts`, SIL Open Font License); body text uses the platform font.
+
 ## Building
 
 This is a Flutter app. Branding settings (server address, colors, and links)

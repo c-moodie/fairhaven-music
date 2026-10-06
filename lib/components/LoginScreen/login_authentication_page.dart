@@ -55,14 +55,17 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
         child: Center(
           child: Column(
             children: [
-              Padding(padding: const EdgeInsets.only(top: 32.0, bottom: 20.0), child: FinampIcon(75, 75)),
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0, bottom: 20.0),
+                child: Hero(tag: "finamp_logo", child: FinampIcon(72, 72)),
+              ),
               Text(
                 AppLocalizations.of(context)!.loginFlowAuthenticationHeading,
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20.0, bottom: 12.0),
+                padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: SimpleButton(
@@ -75,10 +78,11 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
                 ),
               ),
               _buildLoginForm(context),
-              const SizedBox(height: 16),
+              const SizedBox(height: 28),
               CTAMedium(
                 text: AppLocalizations.of(context)!.login,
                 icon: TablerIcons.login_2,
+                minWidth: 200,
                 onPressed: () async => await sendForm(),
               ),
               const SizedBox(height: 20),
@@ -89,8 +93,9 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w500,
                     decoration: TextDecoration.underline,
-                    decorationColor: Theme.of(context).colorScheme.primary,
+                    decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
                   ),
                 ),
               ),
@@ -107,13 +112,18 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
     final node = FocusScope.of(context);
 
     InputDecoration inputFieldDecoration(String placeholder) {
+      final scheme = Theme.of(context).colorScheme;
       return InputDecoration(
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+        fillColor: scheme.onSurface.withOpacity(0.06),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 16.0),
         label: Text(placeholder),
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(14)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: scheme.primary, width: 1.5),
+          borderRadius: BorderRadius.circular(14),
+        ),
       );
     }
 
@@ -125,8 +135,12 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 2.0, left: 8.0),
-              child: Text(AppLocalizations.of(context)!.username, textAlign: TextAlign.start),
+              padding: const EdgeInsets.only(top: 8.0, bottom: 6.0, left: 6.0),
+              child: Text(
+                AppLocalizations.of(context)!.username,
+                textAlign: TextAlign.start,
+                style: TextTheme.of(context).labelLarge,
+              ),
             ),
             TextFormField(
               autocorrect: false,
@@ -145,8 +159,12 @@ class _LoginAuthenticationPageState extends State<LoginAuthenticationPage> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 2.0, left: 8.0),
-              child: Text(AppLocalizations.of(context)!.password, textAlign: TextAlign.start),
+              padding: const EdgeInsets.only(top: 16.0, bottom: 6.0, left: 6.0),
+              child: Text(
+                AppLocalizations.of(context)!.password,
+                textAlign: TextAlign.start,
+                style: TextTheme.of(context).labelLarge,
+              ),
             ),
             TextFormField(
               autocorrect: false,

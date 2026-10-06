@@ -15,42 +15,58 @@ class LoginSplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final placeholder = "FINAMP_PLACEHOLDER";
     final welcomeString = AppLocalizations.of(context)!.loginFlowWelcomeHeading(placeholder).split(placeholder);
+    final welcomePrefix = welcomeString[0].trim();
+    // Avoid crashing on incorrect translations without placeholder
+    final welcomeSuffix = welcomeString.length > 1 ? welcomeString[1].trim() : "";
+    final scheme = ColorScheme.of(context);
+    final mutedColor = TextTheme.of(context).bodyLarge?.color?.withOpacity(0.7);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
       child: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 80.0, bottom: 40.0),
-              child: Hero(tag: "finamp_logo", child: FinampIcon(150, 150)),
-            ),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: Theme.of(context).textTheme.headlineMedium,
-                children: [
-                  TextSpan(text: welcomeString[0]),
-                  TextSpan(
-                    text: "Fairhaven Music",
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      // color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  TextSpan(
-                    // Avoid crashing on incorrect translations without placeholder
-                    text: welcomeString.length > 1 ? welcomeString[1] : "",
-                  ),
-                ],
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 72.0, bottom: 36.0),
+                child: Hero(tag: "finamp_logo", child: FinampIcon(132, 132)),
               ),
-            ),
-            const SizedBox(height: 80),
-            CTAHuge(
-              text: AppLocalizations.of(context)!.loginFlowGetStarted,
-              icon: TablerIcons.music,
-              onPressed: onGetStartedPressed,
-            ),
-          ],
+              if (welcomePrefix.isNotEmpty)
+                Text(
+                  welcomePrefix,
+                  textAlign: TextAlign.center,
+                  style: TextTheme.of(context).titleMedium?.copyWith(color: mutedColor, fontWeight: FontWeight.w500),
+                ),
+              const SizedBox(height: 6),
+              Text(
+                "Fairhaven Music",
+                textAlign: TextAlign.center,
+                style: TextTheme.of(context).displaySmall?.copyWith(fontWeight: FontWeight.w600, height: 1.1),
+              ),
+              if (welcomeSuffix.isNotEmpty)
+                Text(welcomeSuffix, textAlign: TextAlign.center, style: TextTheme.of(context).titleMedium),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18.0),
+                child: Container(
+                  width: 44,
+                  height: 2.5,
+                  decoration: BoxDecoration(color: scheme.tertiary, borderRadius: BorderRadius.circular(2)),
+                ),
+              ),
+              Text(
+                AppLocalizations.of(context)!.finampTagline,
+                textAlign: TextAlign.center,
+                style: TextTheme.of(context).bodyLarge?.copyWith(color: mutedColor, height: 1.4),
+              ),
+              const SizedBox(height: 64),
+              CTAHuge(
+                text: AppLocalizations.of(context)!.loginFlowGetStarted,
+                icon: TablerIcons.music,
+                onPressed: onGetStartedPressed,
+              ),
+            ],
+          ),
         ),
       ),
     );

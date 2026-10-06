@@ -52,7 +52,7 @@ class _ProgressSliderState extends State<ProgressSlider> {
             // The slider can refresh up to 60 times per second, so we wrap it in a
             // RepaintBoundary to avoid more areas being repainted than necessary
             child: SliderTheme(
-              data: SliderThemeData(trackHeight: 3.5, trackShape: CustomTrackShape()),
+              data: SliderTheme.of(context).copyWith(trackHeight: 4.0, trackShape: CustomTrackShape()),
               child: StreamBuilder<ProgressState>(
                 initialData: progressState,
                 stream: progressStateStream,
@@ -147,6 +147,8 @@ class _ProgressSliderDuration extends StatelessWidget {
           printDuration(currentPosition),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             height: 0.5, // reduce line height
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.75),
             fontFeatures: const [
               // fixed-width digits
               FontFeature.tabularFigures(),
@@ -161,6 +163,8 @@ class _ProgressSliderDuration extends StatelessWidget {
           ),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             height: 0.5, // reduce line height
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.75),
             fontFeatures: const [
               // fixed-width digits
               FontFeature.tabularFigures(),
@@ -203,15 +207,15 @@ class __PlaybackProgressSliderState extends ConsumerState<_PlaybackProgressSlide
       data: widget.allowSeeking
           // ? _sliderThemeData.copyWith(
           ? SliderTheme.of(context).copyWith(
-              inactiveTrackColor: IconTheme.of(context).color!.withOpacity(0.35),
-              secondaryActiveTrackColor: IconTheme.of(context).color!.withOpacity(0.6),
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+              inactiveTrackColor: IconTheme.of(context).color!.withOpacity(0.18),
+              secondaryActiveTrackColor: IconTheme.of(context).color!.withOpacity(0.38),
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6.5, elevation: 2.0),
             )
           // )
           // : _sliderThemeData.copyWith(
           : SliderTheme.of(context).copyWith(
-              inactiveTrackColor: IconTheme.of(context).color!.withOpacity(0.35),
-              secondaryActiveTrackColor: IconTheme.of(context).color!.withOpacity(0.6),
+              inactiveTrackColor: IconTheme.of(context).color!.withOpacity(0.18),
+              secondaryActiveTrackColor: IconTheme.of(context).color!.withOpacity(0.38),
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0.1),
               // gets rid of both horizontal and vertical padding
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.1),

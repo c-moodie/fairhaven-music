@@ -49,8 +49,26 @@ class AlbumScreenContentFlexibleSpaceBar extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    SizedBox(height: 125, child: AlbumImage(item: parentItem, tapToZoom: true)),
-                    const SizedBox(width: 4),
+                    SizedBox(
+                      height: 125,
+                      child: AlbumImage(
+                        item: parentItem,
+                        tapToZoom: true,
+                        borderRadius: BorderRadius.circular(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 16,
+                              spreadRadius: -4,
+                              offset: const Offset(0, 6),
+                              color: Colors.black.withValues(alpha: 0.28),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 2,
                       child: ItemInfo(item: parentItem, itemTracks: items, sortConfigController: controller),

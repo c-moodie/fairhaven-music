@@ -93,7 +93,7 @@ class FinampSectionHeader extends ConsumerWidget {
                     alignment: Alignment.centerLeft,
                     child: Material(
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(6.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         // all handled by the [GestureDetector] above,
                         // but kept here for the desktop hover effect
                         onTap: onTap,
@@ -109,14 +109,22 @@ class FinampSectionHeader extends ConsumerWidget {
                                 child: Text(
                                   title,
                                   semanticsLabel: label,
-                                  style: TextTheme.of(context).titleMedium,
+                                  style: TextTheme.of(context).titleLarge?.copyWith(fontSize: 19, height: 1.3),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(width: 2.0),
                               if (titleTrailingIcon != null)
-                                Icon(titleTrailingIcon, size: 20.0, applyTextScaling: true),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Icon(
+                                    titleTrailingIcon,
+                                    size: 18.0,
+                                    applyTextScaling: true,
+                                    color: ColorScheme.of(context).primary,
+                                  ),
+                                ),
                             ],
                           ),
                         ),

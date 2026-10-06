@@ -120,7 +120,7 @@ class _ItemCollectionCardText extends ConsumerWidget {
               item.name ?? context.l10n.unknownName,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w600),
               textAlign: onImage ? TextAlign.center : TextAlign.left,
             ),
             if (subtitle != null)
@@ -128,7 +128,9 @@ class _ItemCollectionCardText extends ConsumerWidget {
                 subtitle,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Theme.of(context).textTheme.bodySmall!.color?.withOpacity(0.7),
+                ),
                 textAlign: onImage ? TextAlign.center : TextAlign.left,
               ),
           ],

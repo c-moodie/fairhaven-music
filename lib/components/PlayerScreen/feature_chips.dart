@@ -308,9 +308,10 @@ class _FeatureContent extends StatelessWidget {
         ),
         _ => Text(
           feature.text,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
             fontSize: 11,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.2,
             overflow: TextOverflow.ellipsis,
           ),
           softWrap: false,

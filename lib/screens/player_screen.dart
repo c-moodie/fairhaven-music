@@ -459,7 +459,7 @@ class _PlayerScreenContent extends ConsumerWidget {
 }
 
 enum PlayerHideable {
-  bigPlayButton(14, 14, 1),
+  bigPlayButton(16, 16, 1),
   bottomActions(0, 27, 2),
   progressSlider(0, 20, 4),
   twoLineTitle(0, 46, 3),

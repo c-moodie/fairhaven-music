@@ -12,7 +12,7 @@ import '../../services/downloads_service.dart';
 import '../../services/finamp_settings_helper.dart';
 import '../../services/jellyfin_api_helper.dart';
 
-final _borderRadius = BorderRadius.circular(4);
+final _borderRadius = BorderRadius.circular(12);
 
 class AlbumChips extends StatelessWidget {
   const AlbumChips({super.key, this.baseItem, this.backgroundColor, this.color, this.includeReleaseDate});

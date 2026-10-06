@@ -7,6 +7,7 @@ import 'package:app_links/app_links.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:background_downloader/background_downloader.dart';
 import 'package:collection/collection.dart';
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/color_schemes.g.dart';
 import 'package:finamp/components/Buttons/cta_medium.dart';
 import 'package:finamp/gen/assets.gen.dart';
@@ -1010,44 +1011,12 @@ class FinampApp extends ConsumerWidget {
       initialRoute: SplashScreen.routeName,
       navigatorObservers: [SplitScreenNavigatorObserver(), KeepScreenOnObserver()],
       builder: buildPlayerSplitScreenScaffold,
-      theme: ThemeData(
-        brightness: Brightness.light,
+      theme: buildFairhavenTheme(
         colorScheme: getColorScheme(accentColor, Brightness.light, amoledTheme),
-        appBarTheme: const AppBarThemeData(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness: Brightness.dark,
-          ),
-        ),
-        snackBarTheme: const SnackBarThemeData(
-          //TODO get rid of floating action buttons and re-enable the floating behavior and insetPadding
-          // behavior: SnackBarBehavior.floating,
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
-          // insetPadding: EdgeInsets.symmetric(
-          //   horizontal: 12.0,
-          //   vertical: 0.0,
-          // ),
-          dismissDirection: DismissDirection.horizontal,
-        ),
-        tooltipTheme: const TooltipThemeData(waitDuration: Duration(milliseconds: 800), preferBelow: false),
         pageTransitionsTheme: transitionBuilder,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
+      darkTheme: buildFairhavenTheme(
         colorScheme: getColorScheme(accentColor, Brightness.dark, amoledTheme),
-        snackBarTheme: const SnackBarThemeData(
-          //TODO get rid of floating action buttons and re-enable the floating behavior and insetPadding
-          // behavior: SnackBarBehavior.floating,
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
-          // insetPadding: EdgeInsets.symmetric(
-          //   horizontal: 12.0,
-          //   vertical: 0.0,
-          // ),
-          dismissDirection: DismissDirection.horizontal,
-        ),
         pageTransitionsTheme: transitionBuilder,
       ),
       scrollBehavior: FinampScrollBehavior(),
@@ -1089,8 +1058,8 @@ class FinampErrorApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData(brightness: Brightness.light, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(brightness: Brightness.dark, colorScheme: darkColorScheme),
+      theme: buildFairhavenTheme(colorScheme: lightColorScheme),
+      darkTheme: buildFairhavenTheme(colorScheme: darkColorScheme),
       supportedLocales: AppLocalizations.supportedLocales,
       home: ErrorScreen(error: error, trace: trace),
       scaffoldMessengerKey: GlobalSnackbar.rawMaterialAppScaffoldKey,

@@ -3776,5 +3776,25 @@
     "quickSettingsTranscodeLink": "All transcoding settings",
     "quickSettingsLayoutLink": "All layout & theme settings",
     "quickSettingsAllSettingsLink": "All Settings",
-    "quickSettingsNetworkLink": "Configure the local address for your server"
+    "quickSettingsNetworkLink": "Configure the local address for your server",
+    "settingsGroupLibrary": "Library & home",
+    "@settingsGroupLibrary": {
+        "description": "Settings screen group heading for library and home screen settings"
+    },
+    "settingsGroupPlayback": "Playback",
+    "@settingsGroupPlayback": {
+        "description": "Settings screen group heading for playback and audio settings"
+    },
+    "settingsGroupDownloadsNetwork": "Downloads & network",
+    "@settingsGroupDownloadsNetwork": {
+        "description": "Settings screen group heading for download and network settings"
+    },
+    "settingsGroupLookAndFeel": "Look & feel",
+    "@settingsGroupLookAndFeel": {
+        "description": "Settings screen group heading for layout, theme, interaction and accessibility settings"
+    },
+    "settingsGroupAccount": "Account",
+    "@settingsGroupAccount": {
+        "description": "Settings screen group heading for account actions such as logging out"
+    }
 }

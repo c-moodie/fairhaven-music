@@ -1,3 +1,4 @@
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/services/feedback_helper.dart';
 import 'package:finamp/utils/platform_helper.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +30,11 @@ class HomeScreenQuickActionButton extends StatelessWidget {
     final accentColor = disabled ? ColorScheme.of(context).primary.withOpacity(0.5) : ColorScheme.of(context).primary;
 
     final buttonChildren = [
-      Icon(icon, size: 16, color: accentColor, weight: 1.0, applyTextScaling: true),
+      Icon(icon, size: 18, color: accentColor, weight: 1.0, applyTextScaling: true),
       Text(
         text,
         style: TextStyle(
-          color:
-              (Theme.brightnessOf(context) == Brightness.light
-                      ? Color.alphaBlend(accentColor.withOpacity(0.33), Colors.black)
-                      : Colors.white)
-                  .withOpacity(disabled ? 0.5 : 1.0),
+          color: fairhavenOnTonal(context, disabled: disabled),
           fontSize: 13,
           height: 0.9,
           fontWeight: FontWeight.w500,
@@ -88,16 +85,12 @@ class HomeScreenQuickActionButton extends StatelessWidget {
 
             style: ButtonStyle(
               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(isDesktop ? 8 : 12)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(isDesktop ? FairhavenRadius.sm : FairhavenRadius.md)),
               ),
               padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                 EdgeInsets.symmetric(horizontal: 8, vertical: isDesktop ? 16 : 8),
               ),
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Theme.brightnessOf(context) == Brightness.dark
-                    ? accentColor.withOpacity(disabled ? 0.05 : 0.15)
-                    : Color.alphaBlend(accentColor.withOpacity(0.2), Colors.white).withOpacity(disabled ? 0.5 : 1.0),
-              ),
+              backgroundColor: WidgetStateProperty.all<Color>(fairhavenTonalFill(context, disabled: disabled)),
             ),
             child: buttonContent,
           ),

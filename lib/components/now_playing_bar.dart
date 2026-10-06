@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:finamp/color_schemes.g.dart';
@@ -16,7 +15,6 @@ import 'package:finamp/services/current_track_metadata_provider.dart';
 import 'package:finamp/services/feedback_helper.dart';
 import 'package:finamp/services/queue_service.dart';
 import 'package:finamp/services/theme_provider.dart';
-import 'package:finamp/services/widget_bindings_observer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,35 +37,53 @@ class NowPlayingBar extends ConsumerWidget {
 
   static const horizontalPadding = 8.0;
   static const albumImageSize = 64.0;
-  static const showPlayButtonAtEnd = false;
+  static const _artSize = 48.0;
+  static const _barRadius = 20.0;
+  static const _playButtonSize = 44.0;
+  static const _progressHeight = 3.0;
 
   BoxDecoration? getShadow(BuildContext context) => BoxDecoration(
-    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+    borderRadius: const BorderRadius.all(Radius.circular(_barRadius)),
     boxShadow: [
       BoxShadow(
-        blurRadius: 12.0,
-        spreadRadius: 8.0,
+        blurRadius: 18.0,
+        spreadRadius: -2.0,
+        offset: const Offset(0, 6),
         color: Theme.brightnessOf(context) == Brightness.light
-            ? darkColorScheme.surface.withOpacity(0.15)
-            : darkColorScheme.surface.withOpacity(0.7),
+            ? darkColorScheme.surface.withOpacity(0.18)
+            : Colors.black.withOpacity(0.55),
       ),
     ],
   );
+
+  /// Background of the floating bar: the surface, lightly tinted with the
+  /// current track's accent so the bar picks up the album's color.
+  Color getBarColor(BuildContext context) {
+    final scheme = ColorScheme.of(context);
+    return Theme.brightnessOf(context) == Brightness.dark
+        ? Color.alphaBlend(scheme.primary.withOpacity(0.16), scheme.surface)
+        : Color.alphaBlend(scheme.primary.withOpacity(0.07), Colors.white);
+  }
 
   Color getProgressForegroundColor(WidgetRef ref) {
     return ColorScheme.of(ref.context).primary;
   }
 
   Color getProgressBackgroundColor(WidgetRef ref) {
-    return Color.alphaBlend(
-      getProgressForegroundColor(ref).withOpacity(0.75),
-      // this is an approximation, the actual background has the blurred cover image
-      ref.watch(brightnessProvider) == Brightness.dark ? Colors.black : Colors.white,
+    return getProgressForegroundColor(ref).withOpacity(0.18);
+  }
+
+  Widget _buildBarShell(BuildContext context, {required Widget child}) {
+    return Material(
+      borderRadius: BorderRadius.circular(_barRadius),
+      clipBehavior: Clip.antiAlias,
+      color: getBarColor(context),
+      elevation: 0,
+      child: SizedBox(width: MediaQuery.widthOf(context), height: albumImageSize, child: child),
     );
   }
 
   Widget buildLoadingQueueBar(WidgetRef ref, void Function()? retryCallback) {
-    final progressBackgroundColor = getProgressBackgroundColor(ref).withOpacity(0.5);
     var context = ref.context;
 
     return SimpleGestureDetector(
@@ -81,54 +97,41 @@ class NowPlayingBar extends ConsumerWidget {
         padding: const EdgeInsets.only(left: 12.0, bottom: 12.0, right: 12.0),
         child: Container(
           decoration: getShadow(ref.context),
-          child: Material(
-            shadowColor: ColorScheme.of(
-              context,
-            ).primary.withOpacity(Theme.brightnessOf(context) == Brightness.light ? 0.75 : 0.3),
-            borderRadius: BorderRadius.circular(12.0),
-            clipBehavior: Clip.antiAlias,
-            color: Theme.brightnessOf(context) == Brightness.dark
-                ? IconTheme.of(context).color!.withOpacity(0.1)
-                : Theme.of(context).cardColor,
-            elevation: 8.0,
-            child: Container(
-              width: MediaQuery.widthOf(context),
-              height: albumImageSize,
-              padding: EdgeInsets.zero,
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: ShapeDecoration(
-                  color: progressBackgroundColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: albumImageSize,
-                      height: albumImageSize,
-                      decoration: const ShapeDecoration(shape: Border(), color: Color.fromRGBO(0, 0, 0, 0.3)),
-                      child: (retryCallback != null)
-                          ? const Icon(Icons.refresh, size: albumImageSize)
-                          : const Center(child: CircularProgressIndicator.adaptive()),
+          child: _buildBarShell(
+            context,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: _artSize,
+                    height: _artSize,
+                    decoration: BoxDecoration(
+                      color: ColorScheme.of(context).primary.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: albumImageSize,
-                        padding: const EdgeInsets.only(left: 12, right: 4),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          (retryCallback != null)
-                              ? AppLocalizations.of(context)!.queueRetryMessage
-                              : AppLocalizations.of(context)!.queueLoadingMessage,
-                        ),
-                      ),
-                    ),
-                  ],
+                    child: (retryCallback != null)
+                        ? Icon(TablerIcons.refresh, size: 26, color: ColorScheme.of(context).primary)
+                        : const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: CircularProgressIndicator.adaptive(strokeWidth: 2.5),
+                          ),
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 4, right: 16),
+                    child: Text(
+                      (retryCallback != null)
+                          ? AppLocalizations.of(context)!.queueRetryMessage
+                          : AppLocalizations.of(context)!.queueLoadingMessage,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -174,16 +177,128 @@ class NowPlayingBar extends ConsumerWidget {
         : null;
     var context = ref.context;
 
-    final elapsedPartBackgroundColor = getProgressForegroundColor(ref);
-    final remainingPartBackgroundColor = getProgressBackgroundColor(ref);
-    final averageBackgroundColor = Color.alphaBlend(
-      elapsedPartBackgroundColor.withOpacity(0.5),
-      remainingPartBackgroundColor,
-    );
-    Color primaryTextColor = AtContrast.getContrastiveTintedTextColor(onBackground: averageBackgroundColor);
+    final scheme = ColorScheme.of(context);
+    final elapsedColor = getProgressForegroundColor(ref);
+    final remainingColor = getProgressBackgroundColor(ref);
+    final Color primaryTextColor = AtContrast.getContrastiveTintedTextColor(onBackground: getBarColor(context));
+    final Color secondaryTextColor = primaryTextColor.withOpacity(0.68);
 
     final showPauseButton = ref.watch(
       mediaStateProvider.select((x) => x.playbackState.playing && x.fadeDirection != FadeDirection.fadeOut),
+    );
+
+    final timeStyle = TextStyle(
+      fontSize: 12.5,
+      fontWeight: FontWeight.w500,
+      color: secondaryTextColor,
+      fontFeatures: const [
+        // fixed-width digits
+        FontFeature.tabularFigures(),
+      ],
+    );
+
+    Widget buildTime() {
+      return StreamBuilder<Duration>(
+        stream: AudioService.position,
+        initialData: audioHandler.playbackState.value.position,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+          playbackPosition = snapshot.data;
+          final showRemaining = Platform.isIOS || Platform.isMacOS;
+          final positionFullMinutes = (playbackPosition?.inMinutes ?? 0) % 60;
+          final positionFullHours = (playbackPosition?.inHours ?? 0);
+          final positionSeconds = (playbackPosition?.inSeconds ?? 0) % 60;
+          final durationFullHours = (currentTrack.item.duration?.inHours ?? 0);
+          final durationFullMinutes = (currentTrack.item.duration?.inMinutes ?? 0) % 60;
+          final durationSeconds = (currentTrack.item.duration?.inSeconds ?? 0) % 60;
+          final durationText = (currentTrack.item.duration?.inHours ?? 0.0) >= 1.0
+              ? "${currentTrack.item.duration?.inHours.toString()}:${((currentTrack.item.duration?.inMinutes ?? 0) % 60).toString().padLeft(2, '0')}:${((currentTrack.item.duration?.inSeconds ?? 0) % 60).toString().padLeft(2, '0')}"
+              : "${currentTrack.item.duration?.inMinutes.toString()}:${((currentTrack.item.duration?.inSeconds ?? 0) % 60).toString().padLeft(2, '0')}";
+          final positionText = printDuration(
+            showRemaining
+                ? ((currentTrack.item.duration ?? Duration.zero) - (playbackPosition ?? Duration.zero))
+                : playbackPosition,
+            leadingZeroes: false,
+            isRemaining: showRemaining,
+          );
+          return Semantics.fromProperties(
+            properties: SemanticsProperties(
+              label:
+                  "${positionFullHours > 0 ? "$positionFullHours hours " : ""}${positionFullMinutes > 0 ? "$positionFullMinutes minutes " : ""}$positionSeconds seconds of ${durationFullHours > 0 ? "$durationFullHours hours " : ""}${durationFullMinutes > 0 ? "$durationFullMinutes minutes " : ""}$durationSeconds seconds",
+            ),
+            excludeSemantics: true,
+            container: true,
+            child: Text(showRemaining ? positionText : "$positionText / $durationText", style: timeStyle),
+          );
+        },
+      );
+    }
+
+    Widget buildProgressLine() {
+      return StreamBuilder<Duration>(
+        stream: AudioService.position,
+        initialData: audioHandler.playbackState.value.position,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+          playbackPosition = snapshot.data;
+          var itemLength = currentTrack.item.duration;
+          final factor = itemLength == null || itemLength.inMilliseconds == 0
+              ? 0.0
+              : (playbackPosition!.inMilliseconds / itemLength.inMilliseconds).clamp(0.0, 1.0).toDouble();
+          return SizedBox(
+            height: _progressHeight,
+            child: Stack(
+              children: [
+                Positioned.fill(child: ColoredBox(color: remainingColor)),
+                FractionallySizedBox(
+                  alignment: AlignmentDirectional.centerStart,
+                  widthFactor: factor,
+                  heightFactor: 1.0,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: elapsedColor,
+                      borderRadius: const BorderRadius.horizontal(right: Radius.circular(_progressHeight)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    final playPauseButton = AudioFadeProgressVisualizerContainer(
+      key: const Key("AlbumArtAudioFadeProgressVisualizer"),
+      width: _playButtonSize,
+      height: _playButtonSize,
+      color: scheme.primary.withOpacity(0.5),
+      borderRadius: BorderRadius.circular(_playButtonSize / 2),
+      child: Material(
+        color: scheme.primary,
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            FeedbackHelper.feedback(FeedbackType.light);
+            unawaited(audioHandler.togglePlayback());
+          },
+          child: Tooltip(
+            message: AppLocalizations.of(context)!.togglePlaybackButtonTooltip,
+            child: Center(
+              child: Icon(
+                showPauseButton ? TablerIcons.player_pause_filled : TablerIcons.player_play_filled,
+                size: 22,
+                color: scheme.onPrimary,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
 
     return Padding(
@@ -226,282 +341,81 @@ class NowPlayingBar extends ConsumerWidget {
                   }
                   return false;
                 },
-                child: Material(
-                  shadowColor: ColorScheme.of(
-                    context,
-                  ).primary.withOpacity(Theme.brightnessOf(context) == Brightness.light ? 0.75 : 0.3),
-                  borderRadius: BorderRadius.circular(12.0),
-                  clipBehavior: Clip.antiAlias,
-                  color: Theme.brightnessOf(context) == Brightness.dark
-                      ? IconTheme.of(context).color!.withOpacity(0.1)
-                      : Theme.of(context).cardColor,
-                  elevation: 8.0,
-                  // If we have a media item and the player hasn't finished, show
-                  // the now playing bar.
-                  child: //TODO move into separate component and share with queue list
-                  Container(
-                    width: MediaQuery.widthOf(context),
-                    height: albumImageSize,
-                    padding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: remainingPartBackgroundColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            if (ref.watch(finampSettingsProvider.showProgressOnNowPlayingBar))
-                              Positioned.fill(child: ColoredBox(color: remainingPartBackgroundColor)),
-                            AlbumImage(
-                              placeholderBuilder: (_) => const SizedBox.shrink(),
-                              imageListenable: currentAlbumImageProvider,
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            if (!showPlayButtonAtEnd)
-                              AudioFadeProgressVisualizerContainer(
-                                key: const Key("AlbumArtAudioFadeProgressVisualizer"),
-                                width: albumImageSize,
-                                height: albumImageSize,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12.0),
-                                  bottomLeft: Radius.circular(12.0),
-                                ),
-                                child: IconButton(
-                                  tooltip: AppLocalizations.of(context)!.togglePlaybackButtonTooltip,
-                                  onPressed: () {
-                                    FeedbackHelper.feedback(FeedbackType.light);
-                                    unawaited(audioHandler.togglePlayback());
-                                  },
-                                  color: Colors.white,
-                                  icon: Icon(
-                                    showPauseButton ? TablerIcons.player_pause : TablerIcons.player_play,
-                                    shadows: <Shadow>[Shadow(color: Colors.black, blurRadius: 10.0)],
-                                    size: 32,
-                                  ),
-                                ),
+                child: _buildBarShell(
+                  context,
+                  child: Stack(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Album art, inset with rounded corners
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: _artSize,
+                              height: _artSize,
+                              child: AlbumImage(
+                                placeholderBuilder: (_) => const SizedBox.shrink(),
+                                imageListenable: currentAlbumImageProvider,
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              if (ref.watch(finampSettingsProvider.showProgressOnNowPlayingBar))
-                                Positioned.fill(
-                                  child: StreamBuilder<Duration>(
-                                    stream: AudioService.position,
-                                    initialData: audioHandler.playbackState.value.position,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        playbackPosition = snapshot.data;
-                                        var itemLength = currentTrack.item.duration;
-                                        return FractionallySizedBox(
-                                          alignment: AlignmentDirectional.centerStart,
-                                          widthFactor: itemLength == null
-                                              ? 0
-                                              : max(0, playbackPosition!.inMilliseconds / itemLength.inMilliseconds),
-                                          child: DecoratedBox(
-                                            decoration: ShapeDecoration(
-                                              color: elapsedPartBackgroundColor,
-                                              shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(12),
-                                                  bottomRight: Radius.circular(12),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return SizedBox.shrink();
-                                      }
-                                    },
-                                  ),
-                                ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                          ),
+                          // Title, artist and time
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 4, right: 4),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: albumImageSize,
-                                      padding: const EdgeInsets.only(left: 12, right: 4),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          OneLineMarqueeHelper(
-                                            key: ValueKey(currentTrack.item.id),
-                                            text: currentTrack.item.title,
-                                            style: TextStyle(
-                                              fontSize: 14.5,
-                                              height: 26 / 20,
-                                              color: primaryTextColor,
-                                              fontWeight: Theme.brightnessOf(context) == Brightness.light
-                                                  ? FontWeight.w500
-                                                  : FontWeight.w600,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  processArtist(currentTrack.item.artist, context),
-                                                  style: TextStyle(
-                                                    color: primaryTextColor,
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w400,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ),
-                                              StreamBuilder<Duration>(
-                                                stream: AudioService.position,
-                                                initialData: audioHandler.playbackState.value.position,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    playbackPosition = snapshot.data;
-                                                    final showRemaining = Platform.isIOS || Platform.isMacOS;
-                                                    final positionFullMinutes = (playbackPosition?.inMinutes ?? 0) % 60;
-                                                    final positionFullHours = (playbackPosition?.inHours ?? 0);
-                                                    final positionSeconds = (playbackPosition?.inSeconds ?? 0) % 60;
-                                                    final durationFullHours =
-                                                        (currentTrack.item.duration?.inHours ?? 0);
-                                                    final durationFullMinutes =
-                                                        (currentTrack.item.duration?.inMinutes ?? 0) % 60;
-                                                    final durationSeconds =
-                                                        (currentTrack.item.duration?.inSeconds ?? 0) % 60;
-                                                    return Semantics.fromProperties(
-                                                      properties: SemanticsProperties(
-                                                        label:
-                                                            "${positionFullHours > 0 ? "$positionFullHours hours " : ""}${positionFullMinutes > 0 ? "$positionFullMinutes minutes " : ""}$positionSeconds seconds of ${durationFullHours > 0 ? "$durationFullHours hours " : ""}${durationFullMinutes > 0 ? "$durationFullMinutes minutes " : ""}$durationSeconds seconds",
-                                                      ),
-                                                      excludeSemantics: true,
-                                                      container: true,
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            printDuration(
-                                                              showRemaining
-                                                                  ? ((currentTrack.item.duration ?? Duration.zero) -
-                                                                        (playbackPosition ?? Duration.zero))
-                                                                  : playbackPosition,
-                                                              leadingZeroes: false,
-                                                              isRemaining: showRemaining,
-                                                            ),
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w400,
-                                                              color: primaryTextColor.withOpacity(0.8),
-                                                              fontFeatures: const [
-                                                                // fixed-width digits
-                                                                FontFeature.tabularFigures(),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (!showRemaining) ...[
-                                                            const SizedBox(width: 2),
-                                                            Text(
-                                                              '/',
-                                                              style: TextStyle(
-                                                                color: primaryTextColor.withOpacity(0.8),
-                                                                fontSize: 14,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFeatures: const [
-                                                                  // fixed-width digits
-                                                                  FontFeature.tabularFigures(),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            const SizedBox(width: 2),
-                                                            Text(
-                                                              // '3:44',
-                                                              (currentTrack.item.duration?.inHours ?? 0.0) >= 1.0
-                                                                  ? "${currentTrack.item.duration?.inHours.toString()}:${((currentTrack.item.duration?.inMinutes ?? 0) % 60).toString().padLeft(2, '0')}:${((currentTrack.item.duration?.inSeconds ?? 0) % 60).toString().padLeft(2, '0')}"
-                                                                  : "${currentTrack.item.duration?.inMinutes.toString()}:${((currentTrack.item.duration?.inSeconds ?? 0) % 60).toString().padLeft(2, '0')}",
-                                                              style: TextStyle(
-                                                                color: primaryTextColor.withOpacity(0.8),
-                                                                fontSize: 14,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFeatures: const [
-                                                                  // fixed-width digits
-                                                                  FontFeature.tabularFigures(),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return const SizedBox.shrink();
-                                                  }
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                  OneLineMarqueeHelper(
+                                    key: ValueKey(currentTrack.item.id),
+                                    text: currentTrack.item.title,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.25,
+                                      color: primaryTextColor,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        AddToPlaylistButton(
-                                          item: currentTrackBaseItem,
-                                          queueItem: currentTrack,
-                                          color: primaryTextColor,
-                                          size: 28,
-                                          visualDensity: const VisualDensity(horizontal: -4),
-                                        ),
-
-                                        if (showPlayButtonAtEnd)
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              AudioFadeProgressVisualizerContainer(
-                                                key: const Key("AlbumArtAudioFadeProgressVisualizer"),
-                                                color: primaryTextColor.withOpacity(0.5),
-                                                width: albumImageSize,
-                                                height: albumImageSize,
-                                                borderRadius: BorderRadius.circular(12.0),
-                                                child: SizedBox.shrink(),
-                                              ),
-                                              IconButton(
-                                                tooltip: AppLocalizations.of(context)!.togglePlaybackButtonTooltip,
-                                                onPressed: () {
-                                                  FeedbackHelper.feedback(FeedbackType.light);
-                                                  unawaited(audioHandler.togglePlayback());
-                                                },
-                                                color: primaryTextColor,
-                                                visualDensity: VisualDensity.compact,
-                                                icon: Icon(
-                                                  showPauseButton ? TablerIcons.player_pause : TablerIcons.player_play,
-                                                  size: 28,
-                                                ),
-                                              ),
-                                            ],
+                                  const SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          processArtist(currentTrack.item.artist, context),
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            color: secondaryTextColor,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                      ],
-                                    ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      buildTime(),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                          AddToPlaylistButton(
+                            item: currentTrackBaseItem,
+                            queueItem: currentTrack,
+                            color: primaryTextColor,
+                            size: 26,
+                            visualDensity: const VisualDensity(horizontal: -4),
+                          ),
+                          Padding(padding: const EdgeInsets.only(left: 2.0, right: 10.0), child: playPauseButton),
+                        ],
+                      ),
+                      if (ref.watch(finampSettingsProvider.showProgressOnNowPlayingBar))
+                        Positioned(left: 0, right: 0, bottom: 0, child: buildProgressLine()),
+                    ],
                   ),
                 ),
               ),

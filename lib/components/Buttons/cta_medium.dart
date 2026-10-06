@@ -28,6 +28,7 @@ class CTAMedium extends StatelessWidget {
     final accentColor = disabled
         ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
         : Theme.of(context).colorScheme.primary;
+    final onAccentColor = Theme.of(context).colorScheme.onPrimary.withOpacity(disabled ? 0.6 : 1.0);
 
     return FilledButton(
       onPressed: disabled
@@ -37,17 +38,11 @@ class CTAMedium extends StatelessWidget {
               onPressed();
             },
       style: ButtonStyle(
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+        shape: WidgetStateProperty.all<OutlinedBorder>(const StadiumBorder()),
         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.only(left: 8 + paddingHorizontal, right: 8, top: paddingVertical, bottom: paddingVertical),
         ),
-        backgroundColor: WidgetStateProperty.all<Color>(
-          Theme.brightnessOf(context) == Brightness.dark
-              ? accentColor.withOpacity(disabled ? 0.05 : 0.15)
-              : Color.alphaBlend(accentColor.withOpacity(0.2), Colors.white).withOpacity(disabled ? 0.5 : 1.0),
-        ),
+        backgroundColor: WidgetStateProperty.all<Color>(accentColor),
       ),
       child: Container(
         constraints: BoxConstraints(minWidth: minWidth + paddingHorizontal),
@@ -56,19 +51,11 @@ class CTAMedium extends StatelessWidget {
         child: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Icon(icon, size: 24, color: accentColor, weight: 1.0),
+            Icon(icon, size: 22, color: onAccentColor, weight: 1.0),
             const SizedBox(width: 8),
             Text(
               text,
-              style: TextStyle(
-                color:
-                    (Theme.brightnessOf(context) == Brightness.light
-                            ? Color.alphaBlend(accentColor.withOpacity(0.33), Colors.black)
-                            : Colors.white)
-                        .withOpacity(disabled ? 0.5 : 1.0),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(color: onAccentColor, fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.2),
             ),
           ],
         ),

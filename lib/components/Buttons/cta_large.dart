@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/services/feedback_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -56,11 +57,7 @@ class CTALarge extends StatelessWidget {
             padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            backgroundColor: WidgetStateProperty.all<Color>(
-              Theme.brightnessOf(context) == Brightness.dark
-                  ? accentColor.withOpacity(disabled ? 0.05 : 0.15)
-                  : Color.alphaBlend(accentColor.withOpacity(0.2), Colors.white).withOpacity(disabled ? 0.5 : 1.0),
-            ),
+            backgroundColor: WidgetStateProperty.all<Color>(fairhavenTonalFill(context, disabled: disabled)),
           ),
           child: Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -73,10 +70,7 @@ class CTALarge extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color:
-                      (Theme.brightnessOf(context) == Brightness.light
-                              ? Color.alphaBlend(accentColor.withOpacity(0.33), Colors.black)
-                              : Colors.white)
-                          .withOpacity(disabled ? 0.5 : 1.0),
+                      fairhavenOnTonal(context, disabled: disabled),
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),

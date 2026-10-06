@@ -2,6 +2,7 @@ import 'package:finamp/components/AddToPlaylistScreen/add_to_playlist_button.dar
 import 'package:finamp/components/PlayerScreen/album_chip.dart';
 import 'package:finamp/components/PlayerScreen/artist_chip.dart';
 import 'package:finamp/components/PlayerScreen/player_buttons_more.dart';
+import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/l10n/app_localizations.dart';
 import 'package:finamp/models/jellyfin_models.dart' as jellyfin_models;
 import 'package:finamp/screens/player_screen.dart';
@@ -48,11 +49,8 @@ class TrackNameContent extends ConsumerWidget {
                     controller.shouldShow(PlayerHideable.twoLineTitle) &&
                     !(MediaQuery.textScalerOf(context).scale(18) > 18 * 1.11);
 
-                final textStyle = TextStyle(
-                  fontSize: 18,
-                  height: 1.2,
-                  fontWeight: Theme.brightnessOf(context) == Brightness.light ? FontWeight.w500 : FontWeight.w500,
-                );
+                // Two lines at 20 * 1.15 = 46px, matching PlayerHideable.twoLineTitle.
+                final textStyle = fairhavenDisplayStyle(fontSize: 20, height: 1.15, fontWeight: FontWeight.w600);
 
                 final textSpan = TextSpan(text: text, style: textStyle);
                 final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr, maxLines: 2)
@@ -108,7 +106,7 @@ class TrackNameContent extends ConsumerWidget {
             Flexible(
               child: ArtistChips(
                 baseItem: trackBaseItemDto,
-                backgroundColor: IconTheme.of(context).color!.withOpacity(0.1),
+                backgroundColor: IconTheme.of(context).color!.withOpacity(0.12),
               ),
             ),
             AddToPlaylistButton(item: trackBaseItemDto, queueItem: currentTrack),
@@ -119,7 +117,7 @@ class TrackNameContent extends ConsumerWidget {
             constraints: const BoxConstraints(maxWidth: 280),
             child: AlbumChips(
               baseItem: trackBaseItemDto,
-              backgroundColor: IconTheme.of(context).color!.withOpacity(0.1),
+              backgroundColor: IconTheme.of(context).color!.withOpacity(0.12),
               key: trackBaseItemDto.album == null ? null : ValueKey("${trackBaseItemDto.album}-album"),
             ),
           ),
