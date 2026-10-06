@@ -1,3 +1,4 @@
+import 'package:finamp/live_radio.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -1440,6 +1441,29 @@ class QueueService {
     bool Function({jellyfin_models.BaseItemDto? item, ContentType? contentType})? isPlayable,
   }) async {
     const uuid = Uuid();
+
+    // Fairhaven Music live radio: a station isn't a library item, so build its
+    // MediaItem directly. The stream address is resolved when it starts playing.
+    final liveStation = liveRadioStationForItem(item);
+    if (liveStation != null) {
+      return MediaItem(
+        id: uuid.v4(),
+        playable: true,
+        title: liveStation.name,
+        artist: liveRadioLabel,
+        extras: {
+          "playSessionId": uuid.v4(),
+          "itemJson": item.toJson(setOffline: false),
+          "shouldTranscode": false,
+          "downloadedTrackPath": null,
+          "isDownloaded": false,
+          "isOffline": false,
+          "contextNormalizationGain": null,
+          "liveRadioUrl": liveStation.url,
+          "liveRadioStationName": liveStation.name,
+        },
+      );
+    }
 
     MediaItemId? itemId;
     final tabContentType = ContentType.fromItemType(item.type ?? "Audio");

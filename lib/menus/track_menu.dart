@@ -1,3 +1,4 @@
+import 'package:finamp/live_radio.dart';
 import 'dart:async';
 
 import 'package:finamp/components/PlayerScreen/queue_list.dart';
@@ -56,6 +57,8 @@ Future<void> showModalTrackMenu({
   FinampQueueItem? queueItem,
   QueueItemSource? source,
 }) async {
+  // Fairhaven Music live radio stations have no song actions (favorite, download, …).
+  if (isLiveRadioItem(item)) return;
   await showThemedBottomSheet(
     context: context,
     item: item,

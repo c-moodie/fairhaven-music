@@ -75,6 +75,10 @@
     },
     "loginFlowServerSelectionHeading": "Connect to Fairhaven Music",
     "createAccountOrResetPassword": "Create an Account or Reset Password",
+    "liveRadioSectionTitle": "Radio",
+    "@liveRadioSectionTitle": {
+        "description": "Heading of the live radio stations row on the home screen"
+    },
     "@createAccountOrResetPassword": {
         "description": "Link below the Log In button that opens the Fairhaven Music account help page"
     },

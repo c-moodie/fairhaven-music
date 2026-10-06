@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:finamp/live_radio.dart';
 import 'package:finamp/color_schemes.g.dart';
 import 'package:finamp/components/AddToPlaylistScreen/add_to_playlist_button.dart';
 import 'package:finamp/components/audio_fade_progress_visualizer_container.dart';
@@ -206,6 +207,10 @@ class NowPlayingBar extends ConsumerWidget {
             return const SizedBox.shrink();
           }
           playbackPosition = snapshot.data;
+          // Fairhaven Music live radio has no length to show.
+          if (isLiveRadioMediaItem(currentTrack.item)) {
+            return Text(liveRadioLabel, style: timeStyle);
+          }
           final showRemaining = Platform.isIOS || Platform.isMacOS;
           final positionFullMinutes = (playbackPosition?.inMinutes ?? 0) % 60;
           final positionFullHours = (playbackPosition?.inHours ?? 0);

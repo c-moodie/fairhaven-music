@@ -1,3 +1,4 @@
+import 'package:finamp/live_radio.dart';
 import 'dart:async';
 import 'dart:math';
 
@@ -62,6 +63,8 @@ final radioStateProvider = Provider<RadioCacheState?>((ref) {
 
 Future<void> maybeAddRadioTracks() async {
   final queueService = GetIt.instance<QueueService>();
+  // Never build a song mix from a Fairhaven Music live radio station.
+  if (isLiveRadioItem(queueService.getCurrentTrack()?.baseItem)) return;
   final currentQueue = queueService.getQueue();
 
   if (_radioCacheStateStream.valueOrNull == null || !_radioCacheStateStream.value!.isStillValid()) {

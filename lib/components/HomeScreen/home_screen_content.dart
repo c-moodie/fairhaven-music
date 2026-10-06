@@ -5,6 +5,7 @@ import 'package:balanced_text/balanced_text.dart';
 import 'package:finamp/components/AlbumScreen/download_button.dart';
 import 'package:finamp/components/Buttons/cta_small.dart';
 import 'package:finamp/components/Buttons/simple_button.dart';
+import 'package:finamp/components/HomeScreen/live_radio_section.dart';
 import 'package:finamp/components/HomeScreen/home_screen_quick_action_button.dart';
 import 'package:finamp/components/HomeScreen/quick_action_editor.dart';
 import 'package:finamp/components/HomeScreen/show_all_button.dart';
@@ -136,6 +137,8 @@ class _HomeScreenContentState extends ConsumerState<HomeScreenContent>
             },
           ),
           const SliverPadding(padding: EdgeInsets.only(top: 4.0)),
+          // Fairhaven Music live radio stations (needs internet, so hidden offline)
+          if (!ref.watch(finampSettingsProvider.isOffline)) const LiveRadioSection(),
           SliverMainAxisGroup(
             slivers: ref
                 .watch(finampSettingsProvider.homeScreenConfiguration)
