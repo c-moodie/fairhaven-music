@@ -7,7 +7,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:finamp/components/global_snackbar.dart';
 import 'package:finamp/l10n/app_localizations.dart';
-import 'package:finamp/live_radio.dart';
 import 'package:finamp/models/finamp_models.dart';
 import 'package:finamp/models/jellyfin_models.dart' as jellyfin_models;
 import 'package:finamp/services/current_track_metadata_provider.dart';
@@ -439,15 +438,6 @@ class MusicPlayerBackgroundTask extends BaseAudioHandler with SeekHandler, Queue
     if (_loudnessEnhancerEffect == null) {
       _volumeNormalizationLogger.info("non-Android base volume gain factor: $iosBaseVolumeGainFactor");
     }
-
-    // Fairhaven Music live radio: show the song currently on air (from the
-    // stream's ICY metadata) on the lock screen, notification and player.
-    _player.icyMetadataStream.listen((icy) {
-      final station = mediaItem.valueOrNull?.extras?["liveRadioStationName"] as String?;
-      liveRadioNowPlaying.add(cleanIcyTitle(icy?.info?.title, stationName: station));
-      _applyLiveRadioNowPlaying();
-    });
-    mediaItem.listen((_) => _applyLiveRadioNowPlaying());
 
     // Propagate all events from the audio player to AudioService clients.
     int? replayQueueIndex;
@@ -1354,39 +1344,9 @@ class MusicPlayerBackgroundTask extends BaseAudioHandler with SeekHandler, Queue
     });
   }
 
-  /// Song currently on air for a live radio station, or null if unknown / not radio.
-  final BehaviorSubject<String?> liveRadioNowPlaying = BehaviorSubject.seeded(null);
-  String? _liveRadioMediaItemId;
-
-  void _applyLiveRadioNowPlaying() {
-    final current = mediaItem.valueOrNull;
-    if (!isLiveRadioMediaItem(current)) {
-      _liveRadioMediaItemId = null;
-      if (liveRadioNowPlaying.valueOrNull != null) liveRadioNowPlaying.add(null);
-      return;
-    }
-    if (_liveRadioMediaItemId != current!.id) {
-      // switched to a different station: forget the previous station's song
-      _liveRadioMediaItemId = current.id;
-      if (liveRadioNowPlaying.valueOrNull != null) liveRadioNowPlaying.add(null);
-    }
-    final station = current.extras?["liveRadioStationName"] as String? ?? current.title;
-    final song = liveRadioNowPlaying.valueOrNull;
-    final title = song ?? station;
-    final artist = song != null ? station : liveRadioLabel;
-    if (current.title != title || current.artist != artist) {
-      mediaItem.add(current.copyWith(title: title, artist: artist));
-    }
-  }
-
   /// Syncs the list of MediaItems (_queue) with the internal queue of the player.
   /// Called by onAddQueueItem and onUpdateQueue.
   Future<AudioSource> _queueItemToAudioSource(FinampQueueItem queueItem) async {
-    // Fairhaven Music live radio: read the station's playlist to find its stream.
-    final liveRadioUrl = queueItem.item.extras?["liveRadioUrl"] as String?;
-    if (liveRadioUrl != null) {
-      return AudioSource.uri(await resolveLiveRadioStream(liveRadioUrl), tag: queueItem);
-    }
     if (queueItem.item.extras!["downloadedTrackPath"] == null) {
       // If downloadedTrack wasn't passed, we assume that the item is not
       // downloaded.

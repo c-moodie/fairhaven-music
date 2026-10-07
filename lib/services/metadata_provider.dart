@@ -1,4 +1,3 @@
-import 'package:finamp/live_radio.dart';
 import 'package:collection/collection.dart';
 import 'package:finamp/models/finamp_models.dart';
 import 'package:finamp/services/item_by_id_provider.dart';
@@ -46,8 +45,6 @@ class MetadataProvider {
 
 final AutoDisposeFutureProviderFamily<MetadataProvider?, BaseItemDto> metadataProvider = FutureProvider.autoDispose
     .family<MetadataProvider?, BaseItemDto>((ref, item) async {
-      // Fairhaven Music live radio stations have no server metadata.
-      if (isLiveRadioItem(item)) return null;
       Future<BaseItemDto?>? parentFuture;
       if (item.parentId != null) {
         parentFuture = ref.watch(itemByIdProvider(item.parentId!).future);

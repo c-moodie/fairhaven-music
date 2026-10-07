@@ -4,14 +4,11 @@ import 'package:finamp/components/PlayerScreen/artist_chip.dart';
 import 'package:finamp/components/PlayerScreen/player_buttons_more.dart';
 import 'package:finamp/fairhaven_theme.dart';
 import 'package:finamp/l10n/app_localizations.dart';
-import 'package:finamp/live_radio.dart';
 import 'package:finamp/models/jellyfin_models.dart' as jellyfin_models;
 import 'package:finamp/screens/player_screen.dart';
 import 'package:finamp/services/finamp_settings_helper.dart';
 import 'package:finamp/services/queue_service.dart';
 import 'package:finamp/services/scrolling_text_helper.dart';
-import 'package:finamp/services/music_player_background_task.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +28,6 @@ class TrackNameContent extends ConsumerWidget {
     final currentTrack = queue!.currentTrack!;
 
     final jellyfin_models.BaseItemDto trackBaseItemDto = currentTrack.baseItem;
-    final isLiveRadio = isLiveRadioItem(trackBaseItemDto);
 
     Widget getContent(BoxConstraints constraints, double padding) => Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,10 +98,7 @@ class TrackNameContent extends ConsumerWidget {
             ),
           ),
         ),
-        // Fairhaven Music live radio: no artist/album/menu/playlist actions,
-        // just a "Live radio" line with the song currently on air.
-        if (isLiveRadio) const _LiveRadioNowPlayingLine(),
-        if (!isLiveRadio) Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -119,7 +112,7 @@ class TrackNameContent extends ConsumerWidget {
             AddToPlaylistButton(item: trackBaseItemDto, queueItem: currentTrack),
           ],
         ),
-        if (!isLiveRadio) Center(
+        Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 280),
             child: AlbumChips(
@@ -140,55 +133,6 @@ class TrackNameContent extends ConsumerWidget {
           child: getContent(constraints, padding),
         );
       },
-    );
-  }
-}
-
-/// Shown under the station name on the player screen for live radio.
-class _LiveRadioNowPlayingLine extends StatelessWidget {
-  const _LiveRadioNowPlayingLine();
-
-  @override
-  Widget build(BuildContext context) {
-    final color = IconTheme.of(context).color!;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: StreamBuilder<String?>(
-        stream: GetIt.instance<MusicPlayerBackgroundTask>().liveRadioNowPlaying,
-        builder: (context, snapshot) {
-          final song = snapshot.data;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(FairhavenRadius.sm),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.sensors, size: 16, color: color),
-                    const SizedBox(width: 6),
-                    Text(liveRadioLabel, style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600)),
-                  ],
-                ),
-              ),
-              if (song != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  song,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: color.withOpacity(0.8), fontSize: 14),
-                ),
-              ],
-            ],
-          );
-        },
-      ),
     );
   }
 }

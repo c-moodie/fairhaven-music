@@ -10,8 +10,7 @@ Need an account or a password reset? Visit https://it.fairhavenbaptist.org/music
 
 This app is a modified version of [Finamp](https://github.com/finamp-app/finamp),
 an open source music player created by the Finamp contributors. Thank you to
-everyone who built it. The original project's README is kept in
-[FINAMP_README.md](FINAMP_README.md).
+everyone who built it. See the original project for its documentation and history.
 
 Fairhaven Music is not affiliated with or endorsed by the Finamp project or
 Jellyfin. "Finamp" and "Jellyfin" are names of their respective projects and

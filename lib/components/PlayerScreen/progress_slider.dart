@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:finamp/live_radio.dart';
 import 'package:finamp/components/print_duration.dart';
 import 'package:finamp/l10n/app_localizations.dart';
 import 'package:finamp/services/progress_state_stream.dart';
@@ -84,9 +83,6 @@ class _ProgressSliderState extends State<ProgressSlider> {
                             ],
                           )
                         : const SizedBox.shrink();
-                  } else if (isLiveRadioMediaItem(snapshot.data!.mediaItem)) {
-                    // Fairhaven Music live radio: nothing to seek, show a "Live" bar instead.
-                    return widget.showDuration ? const _LiveRadioProgressBar() : const SizedBox.shrink();
                   } else if (snapshot.hasData) {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
@@ -367,44 +363,6 @@ class BufferTrackShape extends CustomTrackShape {
       isDiscrete: isDiscrete,
       isEnabled: isEnabled,
       additionalActiveTrackHeight: 0,
-    );
-  }
-}
-
-class _LiveRadioProgressBar extends StatelessWidget {
-  const _LiveRadioProgressBar();
-
-  @override
-  Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          height: 24.0,
-          child: Center(
-            child: Container(
-              height: 4.0,
-              decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2.0)),
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              liveRadioLabel,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

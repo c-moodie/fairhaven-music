@@ -1,4 +1,3 @@
-import 'package:finamp/live_radio.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -779,8 +778,6 @@ class JellyfinApiHelper {
   /// Tells the Jellyfin server that playback has started
   Future<void> reportPlaybackStart(PlaybackProgressInfo playbackProgressInfo) async {
     assert(_verifyCallable());
-    // Fairhaven Music live radio stations aren't on the server, so don't report them.
-    if (isLiveRadioItemId(playbackProgressInfo.itemId)) return;
     final response = await jellyfinApi.startPlayback(playbackProgressInfo);
     if (response.toString().isNotEmpty) {
       throw response as Object;
@@ -790,8 +787,6 @@ class JellyfinApiHelper {
   /// Updates player progress so that Jellyfin can track what we're listening to
   Future<void> updatePlaybackProgress(PlaybackProgressInfo playbackProgressInfo) async {
     assert(_verifyCallable());
-    // Fairhaven Music live radio stations aren't on the server, so don't report them.
-    if (isLiveRadioItemId(playbackProgressInfo.itemId)) return;
     final response = await jellyfinApi.playbackStatusUpdate(playbackProgressInfo);
     if (response.toString().isNotEmpty) {
       throw response as Object;
@@ -801,8 +796,6 @@ class JellyfinApiHelper {
   /// Tells Jellyfin that we've stopped listening to music (called when the audio service is stopped)
   Future<void> stopPlaybackProgress(PlaybackProgressInfo playbackProgressInfo) async {
     assert(_verifyCallable());
-    // Fairhaven Music live radio stations aren't on the server, so don't report them.
-    if (isLiveRadioItemId(playbackProgressInfo.itemId)) return;
     final response = await jellyfinApi.playbackStatusStopped(playbackProgressInfo);
     if (response.toString().isNotEmpty) {
       throw response as Object;
