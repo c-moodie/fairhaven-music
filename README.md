@@ -6,6 +6,8 @@ iPhone and Android.
 
 Need an account or a password reset? Visit https://it.fairhavenbaptist.org/music-app/
 
+Read our [privacy policy](PRIVACY.md).
+
 ## Based on Finamp
 
 This app is a modified version of [Finamp](https://github.com/finamp-app/finamp),

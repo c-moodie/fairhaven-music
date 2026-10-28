@@ -74,10 +74,6 @@
         "description": "Label for button shown during the login process that allows the user to change the app language"
     },
     "loginFlowServerSelectionHeading": "Connect to Fairhaven Music",
-    "createAccountOrResetPassword": "Create an Account or Reset Password",
-    "@createAccountOrResetPassword": {
-        "description": "Link below the Log In button that opens the Fairhaven Music account help page"
-    },
     "lockedServerConnecting": "Connecting to Fairhaven Music…",
     "@lockedServerConnecting": {
         "description": "Shown on the login screen while the app connects to the built-in Fairhaven Music server"
